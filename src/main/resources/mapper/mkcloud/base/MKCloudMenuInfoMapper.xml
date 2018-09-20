@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudMenuInfoMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="parent_menu_id" property="parentMenuId" jdbcType="VARCHAR" />
+    <result column="parent_menu_name" property="parentMenuName" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updator" property="updator" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, org_code, menu_id, menu_name, `level`, sort, parent_menu_id,parent_menu_name, url, `status`, is_delete, type,
+    creator, create_time, updator, update_time, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_menu_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_menu_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_menu_info (org_code, menu_id, menu_name, 
+      `level`, sort, parent_menu_id, 
+      url, `status`, is_delete, 
+      creator, create_time, updator, 
+      update_time, version)
+    values (#{orgCode,jdbcType=VARCHAR}, #{menuId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}, #{parentMenuId,jdbcType=VARCHAR}, 
+      #{url,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updator,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_menu_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+      <if test="menuName != null" >
+        menu_name,
+      </if>
+      <if test="level != null" >
+        `level`,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="parentMenuId != null" >
+        parent_menu_id,
+      </if>
+      <if test="parentMenuName != null" >
+        parent_menu_name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updator != null" >
+        updator,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuId != null" >
+        #{parentMenuId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuName != null" >
+        #{parentMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    update mkcloud_menu_info
+    <set >
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuId != null" >
+        menu_id = #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        `level` = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuId != null" >
+        parent_menu_id = #{parentMenuId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentMenuName != null" >
+        parent_menu_name = #{parentMenuName,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    update mkcloud_menu_info
+    set org_code = #{orgCode,jdbcType=VARCHAR},
+      menu_id = #{menuId,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      `level` = #{level,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR},
+      parent_menu_id = #{parentMenuId,jdbcType=VARCHAR},
+       parent_menu_name = #{parentMenuName,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      updator = #{updator,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="queryMenuInfo" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_menu_info
+    where 1=1
+    <if test="orgCode != null and orgCode !='' " >
+      and  org_code = #{orgCode,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null and id !='' " >
+      and  id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="menuName != null and menuName !='' " >
+      and menu_name = #{menuName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !='' " >
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="queryMenuByRoleId" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    select menu.*
+    from mkcloud_role_info role,mkcloud_role_menu rm,mkcloud_menu_info menu
+    where rm.status =1
+    and menu.status=1
+    and role.id=#{id,jdbcType=VARCHAR}
+    and role.org_code=#{orgCode,jdbcType=VARCHAR}
+    and rm.org_code=#{orgCode,jdbcType=VARCHAR}
+    and menu.org_code=#{orgCode,jdbcType=VARCHAR}
+    and role.id=rm.role_id and rm.menu_id=menu.id
+  </select>
+
+  <select id="queryFirstMenu" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_menu_info
+    where status=1 and level=1
+    <if test="orgCode != null and orgCode !='' " >
+      and  org_code = #{orgCode,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <select id="queryParentMenu" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+   select id from mkcloud_menu_info info, (select
+    DISTINCT parent_menu_id
+    from mkcloud_menu_info
+    where status=1
+    <if test="orgCode != null and orgCode !='' ">
+      and org_code = #{orgCode,jdbcType=VARCHAR}
+    </if>
+    and id in
+    <foreach collection="menuIdList" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>) parent where info.menu_id=parent.parent_menu_id
+  </select>
+
+  <select id="queryUserMenu" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMenuInfo" >
+    select DISTINCT menu.*
+    from mkcloud_user_role ur,mkcloud_role_menu rm,mkcloud_menu_info menu
+    where ur.status =1
+    and rm.status=1
+    and menu.status=1
+    and ur.user_id=#{id,jdbcType=VARCHAR}
+    and ur.org_code=#{orgCode,jdbcType=VARCHAR}
+    and rm.org_code=#{orgCode,jdbcType=VARCHAR}
+    and menu.org_code=#{orgCode,jdbcType=VARCHAR}
+    and ur.role_id=rm.role_id and rm.menu_id=menu.id
+  </select>
+
+</mapper>

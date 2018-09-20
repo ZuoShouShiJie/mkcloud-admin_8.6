@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>办卡量汇总</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+
+<body style="margin-right: 18px; margin-left: 18px;">
+<br>
+<table class="layui-table" lay-data="{url:'applyStatisticsCount/applyCount',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'allCount',width:'100%'}">办卡总量(笔数)</td>
+    </tr>
+    </thead>
+</table>
+<br>
+办卡成功统计:
+<table class="layui-table" lay-data="{url:'applyStatisticsCount/applyCount',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'successCount',width:'33%'}">总成功办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'successOwnCount',width:'33%'}">自然流量成功办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'successPromotersCount',width:'34%'}">推广员推广成功办卡(笔数)</td>
+    </tr>
+    </thead>
+</table>
+办卡失败统计:
+<table class="layui-table" lay-data="{url:'applyStatisticsCount/applyCount',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'errorCount',width:'33%'}">总失败办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'errorOwnCount',width:'33%'}">自然流量失败办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'errorPromotersCount',width:'34%'}">推广员推广失败办卡(笔数)</td>
+    </tr>
+    </thead>
+</table>
+办卡处理中统计:
+<table class="layui-table" lay-data="{url:'applyStatisticsCount/applyCount',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'inCount',width:'33%'}">总处理中办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'inOwnCount',width:'33%'}">自然流量处理中办卡(笔数)</td>
+        <td lay-data="{align:'center',field:'inPromotersCount',width:'34%'}">推广员推广处理中办卡(笔数)</td>
+    </tr>
+    </thead>
+</table>
+<br>
+</body>
+
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+            ,laydate = layui.laydate;
+    });
+</script>
+
+</html>

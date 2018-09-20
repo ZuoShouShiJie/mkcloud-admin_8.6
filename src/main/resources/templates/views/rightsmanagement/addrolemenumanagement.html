@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>角色管理——菜单管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+    <style>
+        .flex-div {
+            margin-right: 34px;
+        }
+        .layui-form-label {
+            padding-right: 0;
+            width: 100px;
+        }
+        .layui-btn {
+            float: right;
+        }
+        .layui-upload-img {
+            float: right;
+            margin-top: 16px;
+        }
+        .layui-input-block button {
+            float: left;
+            margin-top: 20px;
+        }
+        .layui-input {
+            padding-left: 0;
+            margin-left: 10px;
+        }
+        .displaya{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form id="editForm" class="layui-form" action="" onsubmit="return false"
+      style="margin:20px 10px;">
+    <input id="opMethod" type="hidden" name="opMethod"/>
+    <input id="id" type="hidden" name="id"/>
+    <input id="accountBank_t" type="hidden" name="accountBank_t"/>
+    <input id="accountId" type="hidden" name="accountId"/>
+    <input id="attId" type="hidden" name="attId"/>
+    <input id="orgCode" type="hidden" name="orgCode"/>
+    <div class="layui-form-item " >
+        <p id="nav" name="nav"/>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add_button">保存</button>
+        </div>
+    </div>
+    </div>
+</form>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+
+<script type="text/javascript">
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+        if($('#opMethod').val()=="edit"){
+            $('#tel').attr("disabled","disabled");
+            $('#businessPeopleName').attr("disabled","disabled");
+        }
+        if($('#opMethod').val()=="add"){
+            $('#displayclass').addClass("displaya");
+        }
+        $("#tel").blur(function(){
+            $.ajax({
+                url: "institution/queryInstitution",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    type: "0"
+                },
+                 where: {
+                     tel: $('#tel').val()
+                  },
+                success: function (result) {
+                    // console.log(document.getElementById("institutionId"));
+                    var list = result.data;//返回的数据
+                    var role = document.getElementById("accountBank");        //add_role_name给select定义的id
+                }
+            });
+        });
+
+
+
+    });
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form;
+        var $ = layui.$;//获取jquery组件
+        roleName();
+        form.verify({
+            noZeroInteger: function (value) {
+                if (!new RegExp(/^[1-9]\d*$/).test(value)) {
+                    return '请输入数字';
+                }
+            }
+        });
+        //监听提交
+        form.on('submit(add_button)', function (editData) {
+            params = editData.field;
+            // 发现有字段变更之后，通过ajax更新所有字段
+            $.post("businessPeople/addBusinessPeopleIn", params, function (result) {
+                if (result) {
+                    alert('保存成功！');
+                    /*var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引（父类的弹框）
+                    parent.layer.close(index); //再执行关闭*/
+                    window.parent.location.reload();
+                    //layer.alert('保存成功！');
+                }else{
+                    //layer.alert('保存失败：' + result.errorMessage);
+                   alert('该手机号用户已存在,保存失败!');
+                }
+            });
+            return false;
+        });
+        //菜单循环遍历打印拼接操作
+        function roleName() {
+            $.ajax( {
+                url : "institution/queryInstitution",
+                type : 'post',
+                dataType : 'json',
+                success : function(data) {
+                    var menu = ""; //定义变量存储
+                    for(var i = 0;i<data.length;i++){
+                        menu += "<li class='layui-nav-item '>"
+                        if(data[i].parentId== 37){ //取出父元素的菜单，拼进页面
+                            menu +=        "<a href='javascript:;'>"+data[i].institutionName+"</a>"
+                            for(var j = 0;j<data.length;j++){ //继续遍历这几条数据
+                                if(data[j].mid > data[i].mid && data[j].mid < (data[i].mid)+1000){ //取出这个父元素所对应的子元素
+                                    menu +=    "<dl class='layui-nav-child'>"
+                                    menu +=        "<dd>"
+                                    menu +=            "<a href='"+data[j].institutionName+"' target='option'>"+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+data[j].institutionName+"</a>"
+                                    menu +=        "</dd>"
+                                    menu +=    "</dl>"
+                                }
+                            }
+                        }
+                        menu +=    "</li>";
+                    }
+                    $("#nav").html(menu);
+                    var element = layui.element;
+                    element.init()//初始化element事件，使菜单展开
+                }
+            });
+        }
+
+    });
+</script>
+</html>

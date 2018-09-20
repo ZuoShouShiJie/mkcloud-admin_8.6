@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceOrderMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="serial_id" property="serialId" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="trans_type" property="transType" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="bank_code" property="bankCode" jdbcType="VARCHAR" />
+    <result column="bank_fullname" property="bankFullname" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="bank_type" property="bankType" jdbcType="VARCHAR" />
+    <result column="audit_name" property="auditName" jdbcType="VARCHAR" />
+    <result column="audit_id" property="auditId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version_num" property="versionNum" jdbcType="BIGINT" />
+    <result column="is_flag" property="isFlag" jdbcType="VARCHAR" />
+    <result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+    <result column="error_message" property="errorMessage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, serial_id, title, user_id, user_name, trans_type, money, bank_code,
+    bank_fullname, phone, bank_type, audit_name, audit_id, `type`, `status`, create_time, 
+    update_time, version_num, is_flag, error_code, error_message
+  </sql>
+
+  <update id="updateOrdersByIds"  >
+    update finance_order t set t.status = '07'
+    where  id IN
+    <foreach item="order" collection="list" open="(" close=")" separator=",">
+         #{order.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_order
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectOrders" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from finance_order
+    where user_id = #{userId,jdbcType=BIGINT}
+         <![CDATA[  and create_time <= #{date}  ]]>
+          and status = '06' and trans_type = 'charge'
+  </select>
+
+
+  <select id="selectByOrder" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select t.status,t.bank_code,t.money,t.create_time from finance_order
+    where 1=1
+    <if test="serialId != null" >
+      and serial_id = #{serialId,jdbcType=VARCHAR}
+    </if>
+    <if test="title != null" >
+      and title = #{title,jdbcType=VARCHAR}
+    </if>
+
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="userName != null" >
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="transType != null" >
+      and trans_type = #{transType,jdbcType=VARCHAR}
+    </if>
+    <if test="money != null" >
+      and money = #{money,jdbcType=DECIMAL}
+    </if>
+    <if test="bankCode != null" >
+      and bank_code = #{bankCode,jdbcType=VARCHAR}
+    </if>
+    <if test="bankFullname != null" >
+      and bank_fullname = #{bankFullname,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="bankType != null" >
+      and bank_type = #{bankType,jdbcType=VARCHAR}
+    </if>
+    <if test="auditName != null" >
+      and audit_name = #{auditName,jdbcType=VARCHAR}
+    </if>
+    <if test="auditId != null" >
+      and audit_id = #{auditId,jdbcType=BIGINT}
+    </if>
+    <if test="type != null" >
+      and `type` = #{type,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null" >
+      and  `status` = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null" >
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="versionNum != null" >
+      and version_num = #{versionNum,jdbcType=BIGINT}
+    </if>
+    <if test="isFlag != null" >
+      and is_flag = #{isFlag,jdbcType=VARCHAR}
+    </if>
+    <if test="errorCode != null" >
+      and error_code = #{errorCode,jdbcType=VARCHAR}
+    </if>
+    <if test="errorMessage != null" >
+      and error_message = #{errorMessage,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_order
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_order (serial_id, title,
+      user_id, user_name, trans_type, 
+      money, bank_code, bank_fullname, 
+      phone, bank_type, audit_name, 
+      audit_id, `type`, `status`, 
+      create_time, update_time, version_num, 
+      is_flag, error_code, error_message
+      )
+    values (#{serialId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+      #{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{transType,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{bankCode,jdbcType=VARCHAR}, #{bankFullname,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, #{auditName,jdbcType=VARCHAR}, 
+      #{auditId,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+      now(), now(), 1,0, #{errorCode,jdbcType=VARCHAR}, #{errorMessage,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="serialId != null" >
+        serial_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="transType != null" >
+        trans_type,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="bankCode != null" >
+        bank_code,
+      </if>
+      <if test="bankFullname != null" >
+        bank_fullname,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="bankType != null" >
+        bank_type,
+      </if>
+      <if test="auditName != null" >
+        audit_name,
+      </if>
+      <if test="auditId != null" >
+        audit_id,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+        create_time,
+        update_time,
+        version_num,
+        is_flag,
+      <if test="errorCode != null" >
+        error_code,
+      </if>
+      <if test="errorMessage != null" >
+        error_message,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="serialId != null" >
+        #{serialId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="proofId != null" >
+        #{proofId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="bankCode != null" >
+        #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankFullname != null" >
+        #{bankFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null" >
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="auditName != null" >
+        #{auditName,jdbcType=VARCHAR},
+      </if>
+      <if test="auditId != null" >
+        #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      now(), now(), 1,0,
+      <if test="errorCode != null" >
+        #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null" >
+        #{errorMessage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    update finance_order
+    <set >
+      <if test="serialId != null" >
+        serial_id = #{serialId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null" >
+        trans_type = #{transType,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="bankCode != null" >
+        bank_code = #{bankCode,jdbcType=VARCHAR},
+      </if>
+      <if test="bankFullname != null" >
+        bank_fullname = #{bankFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null" >
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="auditName != null" >
+        audit_name = #{auditName,jdbcType=VARCHAR},
+      </if>
+      <if test="auditId != null" >
+        audit_id = #{auditId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionNum != null" >
+        version_num = #{versionNum,jdbcType=BIGINT},
+      </if>
+      <if test="isFlag != null" >
+        is_flag = #{isFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="errorCode != null" >
+        error_code = #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="errorMessage != null" >
+        error_message = #{errorMessage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.FinanceOrder" >
+    update finance_order
+    set serial_id = #{serialId,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      user_name = #{userName,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      bank_code = #{bankCode,jdbcType=VARCHAR},
+      bank_fullname = #{bankFullname,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      bank_type = #{bankType,jdbcType=VARCHAR},
+      audit_name = #{auditName,jdbcType=VARCHAR},
+      audit_id = #{auditId,jdbcType=BIGINT},
+      `type` = #{type,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version_num = #{versionNum,jdbcType=BIGINT},
+      is_flag = #{isFlag,jdbcType=VARCHAR},
+      error_code = #{errorCode,jdbcType=VARCHAR},
+      error_message = #{errorMessage,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

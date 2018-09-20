@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessRelationshipMapper" >
+  <resultMap id="MKCloudMemberRelationVo" type="mkcloudadmin.model.mkcloud.vo.MKCloudMemberRelationVo">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="thirdGrade" property="thirdGrade" jdbcType="VARCHAR" />
+    <result column="secondGrade" property="secondGrade" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByBussinessPersonCode" resultMap="MKCloudMemberRelationVo">
+    SELECT
+    c.business_people_parent_id thirdGrade,
+	b.business_people_parent_id secondGrade
+    FROM
+    ( SELECT a.business_people_parent_id, a.business_people_id FROM mkcloud_business_relationship a WHERE a.business_people_id = #{bussinessPersonCode,jdbcType=VARCHAR} ) b
+    LEFT JOIN mkcloud_business_relationship c ON c.business_people_id = b.business_people_parent_id
+  </select>
+
+</mapper>

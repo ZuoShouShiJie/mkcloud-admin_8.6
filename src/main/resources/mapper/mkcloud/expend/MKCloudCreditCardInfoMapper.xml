@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCreditCardInfoMapper" >
+  <select id="selectProducts" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mkcloud_credit_card_info c
+    where c.is_delete = 0
+    <if test="productCode != null and productCode !=''">
+      and c.product_code = #{productCode,jdbcType=VARCHAR}
+    </if>
+    <if test="productName != null and productName !=''">
+      and c.product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !=''">
+      and c.status = #{status,jdbcType=VARCHAR}
+    </if>
+    order by c.order,c.id
+    <include refid="base.limit"/>
+  </select>
+  <select id="selectProductsCount" resultType="java.lang.Long">
+    select
+    count(*)
+    from mkcloud_credit_card_info c
+    where c.is_delete = 0
+    <if test="productCode != null and productCode !=''">
+      and c.product_code = #{productCode,jdbcType=VARCHAR}
+    </if>
+    <if test="productName != null and productName !=''">
+      and c.product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !=''">
+      and c.status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <!--逻辑删除-->
+  <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long">
+    update mkcloud_credit_card_info
+    set is_delete = 1
+    where id = #{productId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByProductName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_credit_card_info
+    where status = '1' and is_delete = '0'
+    and product_name = #{productName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByProductCode" resultType="java.lang.Long">
+    select
+    count(*)
+    from mkcloud_credit_card_info c
+    where c.is_delete = 0
+    and c.product_code = #{productCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

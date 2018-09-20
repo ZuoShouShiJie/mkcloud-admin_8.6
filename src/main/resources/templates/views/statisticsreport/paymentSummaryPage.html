@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>付款统计</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 18px; margin-left: 18px;">
+<br>
+<table class="layui-table" lay-data="{url:'paymentSummary/queryPaymentSummary',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'paidCommission',width:'50%'}">已付推广员佣金汇总总额(元)</td>
+        <td lay-data="{align:'center',field:'waitCommission',width:'50%'}">待付推广员佣金汇总总额(元)</td>
+    </tr>
+    </thead>
+</table>
+
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+            , laydate = layui.laydate;
+    });
+</script>
+
+</html>

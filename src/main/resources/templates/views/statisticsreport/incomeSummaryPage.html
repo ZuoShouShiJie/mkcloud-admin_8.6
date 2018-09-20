@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>收入汇总</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 18px; margin-left: 18px;">
+<br>
+<table class="layui-table" lay-data="{url:'incomeSummary/queryIncomeSummary',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'totalCommission',width:'33%'}">办卡成功总收佣金(元)</td>
+        <td lay-data="{align:'center',field:'naturalTotal',width:'34%'}">自然流量总收佣金(元)</td>
+        <td lay-data="{align:'center',field:'recommendTotal',width:'33%'}">推广员推荐总收佣金(元)</td>
+    </tr>
+    </thead>
+</table>
+<br>
+<table class="layui-table" lay-data="{url:'incomeSummary/queryIncomeSummary',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'promotersTotal',width:'50%'}">推广员推荐总应付推广员佣金(元)</td>
+        <td lay-data="{align:'center',field:'promotersProfit',width:'50%'}">推广员推荐总佣金收益(元)</td>
+    </tr>
+    </thead>
+</table>
+<br>
+<table class="layui-table" lay-data="{url:'incomeSummary/queryIncomeSummary',method:'post'}">
+    <thead>
+    <tr>
+        <td lay-data="{align:'center',field:'totalProfit',width:'100%'}">总收益(元)</td>
+    </tr>
+    </thead>
+</table>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+            , laydate = layui.laydate;
+    });
+</script>
+
+</html>

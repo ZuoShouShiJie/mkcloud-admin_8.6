@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceProductMainPageMapper" >
+
+  <select id="queryFinanceProductCount" resultType="java.lang.Long">
+    SELECT count(*)
+    FROM finance_product_main_page where 1=1 and  is_delete = 0
+    <if test="productName !='' and productName !=null">
+      AND product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="isShow !=null">
+      AND is_show = #{isShow,jdbcType=INTEGER}
+    </if>
+    <if test="category !=null">
+      AND category = #{category,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <select id="selectByCategoryAndProductNameAndIsShow" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from finance_product_main_page
+    where
+    is_delete = 0
+    <if test="productName !='' and productName !=null">
+      AND product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="isShow !=null">
+      AND is_show = #{isShow,jdbcType=INTEGER}
+    </if>
+    <if test="category !=null">
+      AND category = #{category,jdbcType=INTEGER}
+    </if>
+    ORDER BY seq_no,id
+    <include refid="base.limit" />
+  </select>
+
+  <!--逻辑删除-->
+  <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long" >
+    update finance_product_main_page
+    set is_delete = 1
+    where id = #{productId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

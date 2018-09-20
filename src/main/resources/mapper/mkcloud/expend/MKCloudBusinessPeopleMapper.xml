@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleMapper" >
+  
+  <!--根据推广员编号查看推广人员-->
+  <select id="selectPeopleCode" resultMap="BaseResultMap" parameterType="java.lang.String"  >
+
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    where business_people_code =#{businessPeopleCode,jdbcType=VARCHAR}
+
+
+  </select>
+
+  <select id="selectByNameTel" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    where  business_people_name = #{businessPeopleName,jdbcType=VARCHAR} and  tel = #{tel,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByTel" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    where tel = #{tel,jdbcType=VARCHAR}
+  </select>
+
+  <!--根据条件查看推广人员-->
+  <select id="selectPeopleqQueryByCriteria" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+   where  business_people_type = #{businessPeopleType,jdbcType=VARCHAR}
+    <if test="businessPeopleCode != null  and businessPeopleCode !=''" >
+      and business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''" >
+      and  business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    <if test="tel != null and tel !='' " >
+      and  tel = #{tel,jdbcType=VARCHAR}
+    </if>
+    <if test="state != null and state !='' " >
+     and  `state` = #{state,jdbcType=VARCHAR}
+    </if>
+    order by id
+    <include refid="base.limit" />
+  </select>
+  <!--根据条件查看推广人员-->
+  <select id="selectCount" resultType="java.lang.Long" >
+    select count(id)
+    from mkcloud_business_people
+    where business_people_type = #{businessPeopleType,jdbcType=VARCHAR}
+    <!--<trim  prefix="where" prefixOverrides="AND |OR">-->
+
+      <if test="businessPeopleCode != null  and businessPeopleCode !='' " >
+        and business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+      </if>
+      <if test="businessPeopleName != null and businessPeopleName !='' " >
+        and  business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+      </if>
+      <if test="tel != null and tel !='' " >
+        and  tel = #{tel,jdbcType=VARCHAR}
+      </if>
+      <if test="state != null and state !='' " >
+        and  state = #{state,jdbcType=VARCHAR}
+      </if>
+   <!-- </trim>-->
+  </select>
+  <!--根据business_people_id删除-->
+  <delete id="deleteByPeopleId" parameterType="java.lang.String" >
+    delete from mkcloud_business_people
+    where business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="selectByBusinessPeopleCodeList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    where business_people_code in
+    <foreach item="businessPeopleCode" collection="businessPeopleCodes" open="(" close=")" separator=",">
+      #{businessPeopleCode,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <!--维护推广人员-->
+  <update id="updateByStatic" >
+    update mkcloud_business_people
+    set  `state` = #{state,jdbcType=VARCHAR}
+    where business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+  </update>
+
+
+  <select id="selectByBusinessPeopleCode" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    ORDER BY id
+  </select>
+</mapper>

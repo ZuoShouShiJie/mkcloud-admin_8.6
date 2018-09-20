@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>推广员管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+
+<div class="search_bar" style="margin-top: 20px">
+    &emsp; 推广员工号：
+    <div class="layui-inline">
+        <input class="layui-input" name="method" placeholder="请输入推广员工号" id="business_people_code" style="width: 130px;">
+    </div>
+    &emsp; 推广员姓名：
+    <div class="layui-inline">
+        <input class="layui-input" name="method" placeholder="请输入推广员姓名" id="business_people_name" style="width: 130px;">
+    </div>
+    &emsp; 推广员手机：
+    <div class="layui-inline">
+        <input class="layui-input" name="method" placeholder="请输入推广员手机" id="tel" style="width: 130px;">
+    </div>
+    &emsp;状态：
+    <div class="layui-input-inline">
+        <select name="status" id="search_status">
+            <option value="">请选择</option>
+            <option value="1">有效</option>
+            <option value="0">失效</option>
+            <option value="2">待审核</option>
+        </select>
+    </div>
+    <button class="layui-btn" data-type="reload" style="margin-left: 20px;">查询</button>
+    <!--<button class="layui-btn layui-btn-normal add_button">创建</button>-->
+    <button data-type="reset" class="layui-btn layui-btn-primary">重置</button>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'businessPeople/selectQueryByCriteriaPeople?businessPeopleType=1',method:'post', page:true, id:'mkcloud'}" lay-filter="mkcloud">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'order',width:70,type:'numbers'}">排序</th>
+
+        <th lay-data="{align:'center',field:'businessPeopleCode',event: 'selectOne',style:'cursor: pointer;text-decoration:underline;color:#09f;'}">推广员工号</th>
+        <th lay-data="{align:'center',field:'businessPeopleName'}">推广员姓名</th>
+        <th lay-data="{align:'center',field:'tel',width:100}">推广员手机</th>
+        <th lay-data="{align:'center',field:'province'}">推广员省市</th>
+        <th lay-data="{align:'center',field:'stateName'}">推广员状态</th>
+        <th lay-data="{align:'center',field:'createTime'}">建档日期</th>
+        <th lay-data="{align:'center',field:'allCommission',event: 'queryAll',style:'cursor: pointer;text-decoration:underline;color:#09f;'}">办件量</th>
+        <th lay-data="{align:'center',field:'inCommission',event: 'queryMonth',style:'cursor: pointer;text-decoration:underline;color:#09f;'}">当月办件量</th>
+        <th lay-data="{align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/html" id="barDemo">
+    {{#  if(d.state =='2'){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="tong">通过</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="ju">拒绝</a>
+    {{#  } }}
+    {{#  if(d.state =='1'){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+    {{#  } }}
+    {{#  if(d.state =='0'){ }}
+    <a  lay-event="">已失效</a>
+    {{#  } }}
+</script>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('mkcloud', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        businessPeopleCode : $('#business_people_code').val(),
+                        businessPeopleName : $('#business_people_name').val(),
+                        tel : $('#tel').val(),
+                        state : $('#search_status').val()
+                    }
+                });
+            },
+            reset: function () {
+                $('#business_people_code').val("");
+                $('#business_people_name').val("");
+                $('#tel').val("");
+                $('#search_status').val("")
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            console.log(active[type].call(this))
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(mkcloud)', function(obj){
+            var data = obj.data;
+            var businessPeopleCode = data.businessPeopleCode;
+            //alert(data.id);
+            if(obj.event === 'detail'){
+                layer.msg('seqNo：'+ data.seqNo + ' 的审核操作');
+            } else if(obj.event === 'tong'){
+                layer.confirm('是否确定通过？', {
+                    btn: ['通过','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url:'businessPeople/updateByState',
+                        type:'post',
+                        dataType:'json',
+                        data:{
+                            businessPeopleCode:businessPeopleCode,
+                            state:1
+                        },
+                        success:function (res) {
+                            if(res.code >0){
+                                layer.alert('已通过');
+                            }else {
+                                layer.msg(status.msg,{
+                                    icon:1,
+                                    offset: 'rb',//右下角弹出
+                                    title: false,//不显示标题
+                                    closeBtn: 0, //不显示关闭按钮
+                                    shade: [0],//不显示遮罩层
+                                    time: 2000, //2秒后自动关闭
+                                    anim: 4,//动画效果
+                                });
+                                layui.table.reload('mkcloud'); //更新成功刷新当前数据表格 分页默认为当前页
+
+                            }
+                        },
+                        error:function (res) {
+                            layer.alert('网络错误!');
+                        }
+                    });
+                });
+            }else if(obj.event === 'queryAll'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=totalCardAmount']
+                    ,title: '办件量详情'
+                    ,shade: 0.5
+                    ,area: ['1000px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var body = layer.getChildFrame('body',index);
+                        // var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        body.find('#business_people_code').val(data.businessPeopleCode);
+                        body.find('#business_people_name').val(data.businessPeopleName);
+                        body.find('#business_people_level').val(data.businessPeopleLevel);
+                        body.find('#state').val(data.stateName);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryOnLoad(data.businessPeopleCode,data.stateName);
+                    }
+                    ,end: function () {
+                        //location.reload();
+                        $(".layui-laypage-btn")[0].click();
+                    }
+                });
+            }else if(obj.event === 'queryMonth'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=totalCardAmount']
+                    ,title: '当月办件量详情'
+                    ,shade: 0.5
+                    ,area: ['1000px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var body = layer.getChildFrame('body',index);
+                        // var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        body.find('#business_people_code').val(data.businessPeopleCode);
+                        body.find('#business_people_name').val(data.businessPeopleName);
+                        body.find('#business_people_level').val(data.businessPeopleLevel);
+                        body.find('#state').val(data.stateName);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryOnLoad(data.businessPeopleCode,data.stateName,"1");
+                    }
+                    ,end: function () {
+                        //location.reload();
+                        $(".layui-laypage-btn")[0].click();
+                    }
+                });
+
+            } else if(obj.event === 'ju'){
+                layer.confirm('是否确定拒绝？', {
+                    btn: ['拒绝','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url:'businessPeople/updateByState',
+                        type:'post',
+                        dataType:'json',
+                        data:{
+                            businessPeopleCode:businessPeopleCode,
+                            state:0
+                        },
+                        success:function (res) {
+                            if(res.code >0){
+                                layer.alert('已拒绝');
+                            }else {
+                                layer.msg(status.msg,{
+                                    icon:1,
+                                    offset: 'rb',//右下角弹出
+                                    title: false,//不显示标题
+                                    closeBtn: 0, //不显示关闭按钮
+                                    shade: [0],//不显示遮罩层
+                                    time: 2000, //2秒后自动关闭
+                                    anim: 4,//动画效果
+                                });
+                                layui.table.reload('mkcloud'); //更新成功刷新当前数据表格 分页默认为当前页
+
+                            }
+                        },
+                        error:function (res) {
+                            layer.alert('网络错误!');
+                        }
+                    });
+                });
+            }else if(obj.event === 'selectOne'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=outSeleceBusinessPeople']
+                    ,title: '查看推广员'
+                    ,shade: 0.5
+                    ,area: ['800px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        subForm.find('#opMethod').val("edit");
+                        subForm.find('#businessPeopleId').val(data.id);
+                        subForm.find('#businessPeopleCode').val(data.businessPeopleCode);
+                        subForm.find('#businessPeopleName').val(data.businessPeopleName);
+                        subForm.find('#businessPeopleIdType').val("01");
+                        subForm.find('#idNo').val(data.idNo);
+                        subForm.find('#tel').val(data.tel);
+                        subForm.find('#accountBank_t').val(data.accountBank);
+                        subForm.find('#accountCode').val(data.accountCode);
+                        subForm.find('#province').val(data.province);
+                        subForm.find('#city').val(data.city);
+                        subForm.find('#district').val(data.district);
+                        subForm.find('#detailedAddress').val(data.detailedAddress);
+                        subForm.find('#businessPeopleLevel').val(data.businessPeopleLevel);
+                        subForm.find('#wchat').val(data.wchat);
+                        subForm.find('#faceOfIDCardUrl').val(data.faceOfIDCardUrl);
+                        subForm.find('#faceOfIDCardView').attr('src', data.faceOfIDCardUrl);
+                        subForm.find('#backOfIDCardUrl').val(data.backOfIDCardUrl);
+                        subForm.find('#backOfIDCardView').attr('src', data.backOfIDCardUrl);
+                        subForm.find('#handIDCardUrl').val(data.handIDCardUrl);
+                        subForm.find('#handIDCardView').attr('src', data.handIDCardUrl);
+                        subForm.find('#contractUrl').val(data.contractUrl);
+                        subForm.find('#contractView').attr('src', data.contractUrl);
+
+                        if(data.state=="1"){
+                            subForm.find('#Yes').attr("checked","checked");
+                        }else {
+                            subForm.find('#No').attr("checked","checked");
+                        }
+                    }
+                    ,end: function () {
+                        //location.reload();
+                        $(".layui-laypage-btn")[0].click();
+
+                    }
+
+                });
+            }else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=outAddBusinessPeople']
+                    ,title: '查看推广员'
+                    ,shade: 0.5
+                    ,area: ['800px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        subForm.find('#opMethod').val("edit");
+                        subForm.find('#id').val(data.id);
+                        subForm.find('#businessPeopleId').val(data.businessPeopleCode);
+                        subForm.find('#businessPeopleCode').val(data.businessPeopleCode);
+                        subForm.find('#businessPeopleName').val(data.businessPeopleName);
+                        subForm.find('#businessPeopleIdType').val("01");
+                        subForm.find('#idNo').val(data.idNo);
+                        subForm.find('#tel').val(data.tel);
+                        subForm.find('#accountId').val(data.accountId);
+                        subForm.find('#attId').val(data.attId);
+                        subForm.find('#accountBank_t').val(data.accountBank);
+                        subForm.find('#accountCode').val(data.accountCode);
+                        subForm.find('#province').val(data.province);
+                        subForm.find('#city').val(data.city);
+                        subForm.find('#district').val(data.district);
+                        subForm.find('#detailedAddress').val(data.detailedAddress);
+                        subForm.find('#businessPeopleLevel').val(data.businessPeopleLevel);
+                        subForm.find('#wchat').val(data.wchat);
+
+                        if(data.state=="1"){
+                            subForm.find('#Yes').attr("checked","checked");
+                        }else {
+                            subForm.find('#No').attr("checked","checked");
+                        }
+                    }
+                    ,end: function () {
+                        //location.reload();
+                        $(".layui-laypage-btn")[0].click();
+                    }
+                });
+            }
+        });
+        $('.add_button').on('click',function (){
+            layer.open({
+                type: 2
+                ,offset: 'auto'
+                ,id: 'saveAuto'
+                ,content: ['page?page=addBusinessPeople']
+                ,title: '推广员'
+                ,shade: 0.5
+                ,area: ['800px', '450px']
+                ,success: function(layero, index){
+                    var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                    var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                    subForm.find('#opMethod').val("add");
+                }
+                ,end: function () {
+                    //location.reload();
+                    $(".layui-laypage-btn")[0].click();
+                }
+            });
+        });
+
+    });
+</script>
+</html>

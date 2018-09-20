@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无推广人员关联单据</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+
+<div class="search_bar" style="margin-top: 20px">
+    <div class="layui-form-item">
+        <!--<label class="layui-form-label">客户姓名：</label>-->
+        客户姓名：
+        <div class="layui-inline">
+            <input class="layui-input" name="applyName"  id="applyName" lay-verify="required" autocomplete="off">
+        </div>&emsp;
+        &emsp; 客户手机号：
+        <div class="layui-inline">
+            <input class="layui-input" name="applyMobile" id="applyMobile" lay-verify="required" autocomplete="off">
+        </div>
+        <!--  客户申请时间
+    <div class="layui-inline">
+           <div class="layui-input-inline">
+               <input name="beginDate" id="beginDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+           </div>
+
+
+           <div class="layui-input-inline">
+               <input name="endDate" id="endDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+           </div>
+       </div>-->
+    </div>
+    <div class="layui-form-item" align="center">
+        <!--<label class="layui-form-label">客户申请时间</label>-->
+        <!--客户申请时间
+        <div class="layui-inline">
+            <div class="layui-input-inline">
+                <input name="beginDate" id="beginDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+            </div>
+
+
+            <div class="layui-input-inline">
+                <input name="endDate" id="endDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+            </div>
+        </div>-->
+
+        <button class="layui-btn" data-type="reload" style="margin-left: 20px;">查询</button>
+        <button data-type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+    </div>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'noBusinessPersionManage/queryNoBusinessPersionData',method:'post', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'seqNo',width:100,type:'numbers'}">序号</th>
+        <th lay-data="{align:'center',field:'applyName'}">客户姓名</th>
+        <th lay-data="{align:'center',field:'applyIdCard',with:200}">客户身份证号</th>
+        <th lay-data="{align:'center',field:'applyMobile'}">手机号</th>
+        <th lay-data="{align:'center',field:'applyCardTime',with:200}">客户申请时间</th>
+        <th lay-data="{align:'center',field:'applyStatus',with:200}">申请状态</th>
+        <th lay-data="{align:'center',field:'applyProduct',width:150}">产品</th>
+        <th lay-data="{align:'center',field:'businessPeopleCode'}">推广员工号</th>
+        <th lay-data="{align:'center',field:'businessPeopleName'}">推广员姓名</th>
+        <th lay-data="{fixed:'right',align:'center',field:'claim'}">认领状态</th>
+        <th lay-data="{fixed:'right',align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="deploy">分派</a>
+</script>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+        ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#beginDate'
+        });
+        laydate.render({
+            elem: '#endDate'
+        });
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        applyName : $('#applyName').val(),
+                        applyMobile : $('#applyMobile').val(),
+                        beginDate : $('#beginDate').val(),
+                        endDate : $('#endDate').val()
+                    }
+                });
+            },
+            reset: function () {
+                $('#applyName').val("");
+                $('#applyMobile').val("");
+                $('#beginDate').val("");
+                $('#endDate').val("")
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(finance)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'deploy'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page_deployPage']
+                    ,title: '分派页面'
+                    ,shade: 0.5
+                    ,area: ['600px', '500px']
+                    ,success: function(layero, index){
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        subForm.find('#applyName').val(data.applyName);
+                        subForm.find('#applyMobile').val(data.applyMobile);
+                        subForm.find('#applyProduct').val(data.applyProduct);
+                        subForm.find('#applyCardTime').val(data.applyCardTime);
+                        subForm.find('#pid').val(data.id);
+                    }
+                    ,end: function () {
+                        $(".layui-laypage-btn")[0].click();
+
+                    }
+                });
+            }
+        });
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //excel上传
+            var uploadInst = upload.render({
+                elem: '#uploadExcel'
+                ,url: 'feedBackInfoImport/excelUpload/'
+                ,accept:'file'
+                ,done: function(res){
+                    layui.table.reload('finance');
+                    alert(res.msg);
+                }
+                ,error : function(res) {
+                    layui.table.reload('finance');
+                    alert("上传失败");
+                }
+            });
+        });
+
+    });
+</script>
+</html>

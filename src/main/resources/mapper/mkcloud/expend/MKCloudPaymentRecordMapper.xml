@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudPaymentRecordMapper" >
+  <select id="selectBySettlementIds" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_payment_record
+    where settlement_id in
+    <foreach item="settlementId" collection="settlementIds" open="(" close=")" separator=",">
+      #{settlementId,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+  <select id="selectUnpaidDataCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_payment_record
+    where 0 = 0 and state = '0'
+    <if test="payee !='' and payee != null" >
+      and payee = #{payee,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccount !='' and payeeAccount != null" >
+      and payee_account = #{payeeAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="costType != '' and costType != null" >
+      and cost_type = #{costType,jdbcType=VARCHAR}
+    </if>
+    <if test=" beginDate != null" >
+     and  create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null" >
+      and create_time &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectUnpaidDataList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_payment_record
+    where 0 = 0 and state = '0'
+    <if test="payee !='' and payee != null" >
+      and payee = #{payee,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccount != '' and payeeAccount != null" >
+      and payee_account = #{payeeAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="costType !='' and costType != null" >
+      and cost_type = #{costType,jdbcType=VARCHAR}
+    </if>
+    <if test=" beginDate != null" >
+      and create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test=" endDate != null" >
+      and create_time &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    ORDER BY id
+    <include refid="base.limit" />
+  </select>
+
+  <!-- -->
+  <select id="selectPaidDataCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_payment_record
+    where 0 = 0 and state = '1'
+    <if test="payee != '' and payee != null" >
+     and  payee = #{payee,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccount !='' and payeeAccount != null" >
+      and payee_account = #{payeeAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="costType !='' and costType != null" >
+      and cost_type = #{costType,jdbcType=VARCHAR}
+    </if>
+    <if test=" beginDate != null" >
+      and create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null" >
+      and create_time &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="confirmBeginDate != null" >
+      and confirm_time >= #{confirmBeginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="confirmEndDate != null" >
+      and confirm_time &lt;  #{confirmEndDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectPaidDataList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_payment_record
+    where 0 = 0 and state = '1'
+    <if test="payee !='' and payee != null" >
+     and  payee = #{payee,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccount !='' and payeeAccount != null" >
+      and payee_account = #{payeeAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="costType !='' and costType != null" >
+      and cost_type = #{costType,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null" >
+     and  create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null" >
+      and `create_time`&lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="confirmBeginDate != null" >
+     and  confirm_time >= #{confirmBeginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="confirmEndDate != null" >
+     and confirm_time &lt;  #{confirmEndDate,jdbcType=TIMESTAMP}
+    </if>
+    ORDER BY id
+    <include refid="base.limit" />
+  </select>
+
+
+  <select id="selectUnpaidAllDataList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_payment_record
+    where 0 = 0 and state = '0'
+    <if test="payee !='' and payee != null" >
+      and payee = #{payee,jdbcType=VARCHAR}
+    </if>
+    <if test="payeeAccount != '' and payeeAccount != null" >
+      and payee_account = #{payeeAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="costType !='' and costType != null" >
+      and cost_type = #{costType,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != '' and beginDate != null" >
+      and create_time > #{beginDate,jdbcType=VARCHAR}
+    </if>
+    <if test="endDate != '' and endDate != null" >
+      and create_time &lt;  #{endDate,jdbcType=VARCHAR}
+    </if>
+    ORDER BY id
+  </select>
+
+  <select id="selectBySingleSettlementId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_payment_record
+    where settlement_id = #{settlementId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

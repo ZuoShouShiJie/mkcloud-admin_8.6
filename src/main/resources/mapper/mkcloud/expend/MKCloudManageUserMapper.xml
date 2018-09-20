@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudManageUserMapper" >
+  <select id="queryByUserNameAndPwd" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_manage_user
+    where user_id = #{username,jdbcType=VARCHAR}
+    AND password = #{password,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_manage_user
+    where user_id = #{username,jdbcType=VARCHAR}
+  </select>
+  <update id="updateByUserId" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudManageUser" >
+    update mkcloud_manage_user
+    <set >
+      <if test="password != null" >
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectUserInfoCount" resultType="java.lang.Long">
+    select
+    count(id)
+    from mkcloud_manage_user
+    where 1=1
+    <if test="username != null and username !=''" >
+      and user_id = #{username,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectUserInfoList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_manage_user
+    where 1=1
+    <if test="username != null and username !=''" >
+      and user_id = #{username,jdbcType=VARCHAR}
+    </if>
+    order by id
+    <include refid="base.limit" />
+  </select>
+
+
+</mapper>

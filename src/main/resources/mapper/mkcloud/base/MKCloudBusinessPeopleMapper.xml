@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeople" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_people_code" property="businessPeopleCode" jdbcType="VARCHAR" />
+    <result column="business_people_name" property="businessPeopleName" jdbcType="VARCHAR" />
+    <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="wchat" property="wchat" jdbcType="VARCHAR" />
+    <result column="business_people_type" property="businessPeopleType" jdbcType="VARCHAR" />
+    <result column="business_people_level" property="businessPeopleLevel" jdbcType="VARCHAR" />
+    <result column="work_address" property="workAddress" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="district" property="district" jdbcType="VARCHAR" />
+    <result column="detailed_address" property="detailedAddress" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="work_unit" property="workUnit" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_people_code, business_people_name, id_no, tel, wchat, business_people_type, 
+    business_people_level, work_address, province, city, district, detailed_address, 
+    `state`, open_id, create_time, create_user, update_time, update_user, work_unit
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_business_people
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeople" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people (business_people_code, business_people_name, 
+      id_no, tel, wchat, business_people_type, 
+      business_people_level, work_address, province, 
+      city, district, detailed_address, 
+      `state`, open_id, create_time, 
+      create_user, update_time, update_user, 
+      work_unit)
+    values (#{businessPeopleCode,jdbcType=VARCHAR}, #{businessPeopleName,jdbcType=VARCHAR}, 
+      #{idNo,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{wchat,jdbcType=VARCHAR}, #{businessPeopleType,jdbcType=VARCHAR}, 
+      #{businessPeopleLevel,jdbcType=VARCHAR}, #{workAddress,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{detailedAddress,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{workUnit,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeople" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleCode != null" >
+        business_people_code,
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name,
+      </if>
+      <if test="idNo != null" >
+        id_no,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="wchat != null" >
+        wchat,
+      </if>
+      <if test="businessPeopleType != null" >
+        business_people_type,
+      </if>
+      <if test="businessPeopleLevel != null" >
+        business_people_level,
+      </if>
+      <if test="workAddress != null" >
+        work_address,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="district != null" >
+        district,
+      </if>
+      <if test="detailedAddress != null" >
+        detailed_address,
+      </if>
+      <if test="state != null" >
+        `state`,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="workUnit != null" >
+        work_unit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleCode != null" >
+        #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="wchat != null" >
+        #{wchat,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleType != null" >
+        #{businessPeopleType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleLevel != null" >
+        #{businessPeopleLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null" >
+        #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedAddress != null" >
+        #{detailedAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        #{workUnit,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeople" >
+    update mkcloud_business_people
+    <set >
+      <if test="businessPeopleCode != null" >
+        business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        id_no = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="wchat != null" >
+        wchat = #{wchat,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleType != null" >
+        business_people_type = #{businessPeopleType,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleLevel != null" >
+        business_people_level = #{businessPeopleLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null" >
+        work_address = #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null" >
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="detailedAddress != null" >
+        detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="workUnit != null" >
+        work_unit = #{workUnit,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeople" >
+    update mkcloud_business_people
+    set business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      id_no = #{idNo,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      wchat = #{wchat,jdbcType=VARCHAR},
+      business_people_type = #{businessPeopleType,jdbcType=VARCHAR},
+      business_people_level = #{businessPeopleLevel,jdbcType=VARCHAR},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+      `state` = #{state,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      work_unit = #{workUnit,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

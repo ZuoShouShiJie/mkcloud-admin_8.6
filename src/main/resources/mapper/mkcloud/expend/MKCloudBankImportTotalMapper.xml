@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBankImportTotalMapper" >
+  <select id="queryFeedbackBankTotalCount" resultType="java.lang.Long">
+    SELECT count(*)
+    FROM mkcloud_bank_import_total where is_delete = 0
+    <if test="method !='' and method !=null">
+      AND batch_id = #{method,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByBatchId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_bank_import_total where 1=1
+    <if test="method !='' and method !=null">
+      AND batch_id = #{method,jdbcType=VARCHAR}
+    </if>
+    order by id DESC
+    <include refid="base.limit" />
+  </select>
+
+  <delete id="delFeedBackInfoImportDataByBatchId" >
+    delete from mkcloud_bank_import_total
+    where batch_id = #{batchId,jdbcType=VARCHAR}
+  </delete>
+
+  <update id="updateFeedBackInfoImportTotalByBatchId" >
+    update mkcloud_bank_import_total
+    <set >
+        `state` = '1'
+    </set>
+    where batch_id = #{batchId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectDataByBatchId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_bank_import_total where
+       batch_id = #{batchId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

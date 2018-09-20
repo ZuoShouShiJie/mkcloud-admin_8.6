@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Q&A管理</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+	<div class="search_bar" style="margin-top: 20px">
+		&emsp; 标题：
+		<div class="layui-inline">
+			<input class="layui-input" name="method" id="search_method">
+		</div>
+		<button class="layui-btn" data-type="reload">搜索</button>
+		<button class="layui-btn layui-btn-normal add_button">创建</button>
+		<button class="layui-btn layui-btn-danger" data-type="getCheckData">删除</button>
+	</div>
+	<!-- 自动渲染 -->
+	<table class="layui-table" lay-data="{url:'question/queryQuesttions', page:true, id:'questions'}" lay-filter="questions">
+		<thead>
+			<tr>
+				<th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+				<th lay-data="{align:'center',field:'seqNo',width:60}">排序</th>
+				<th lay-data="{field:'title'}">标题</th>
+				<th lay-data="{fixed: 'right', width:178, align:'center', toolbar: '#barDemo'}">操作</th>
+			</tr>
+		</thead>
+	</table>
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+	</script>
+</body>
+<script th:src="@{frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        var arr = "";
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('questions', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        title : $('#search_method').val()
+
+                    }
+                });
+            },
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('questions'),
+                    deldata = checkStatus.data;
+                layer.confirm('确认删除选中的 '+deldata.length+' 条记录', function(data){
+                    if(deldata.length==0){
+                        return ;
+                    }
+                    for(var j = 0; j< deldata.length; j++){
+                        arr=arr+deldata[j].id+","
+                    }
+                    $.ajax({
+                        url : "question/deleteQuesttions",
+                        async : true,
+                        type : "POST",
+                        data :  {
+                            "idarr":arr
+                        },
+                        success : function(data) {
+                            // 删除成功后刷新页面
+                            window.location.reload();
+                        },
+                        error : function() {
+                            alert("请求失败");
+                        }
+                    });
+                    /*location.href="question/deleteQuesttions?id="+data.id;*/
+                    layer.msg('删除成功');
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听表格复选框选择
+        table.on('checkbox(questions)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(questions)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('确认删除该行', function(index){
+                    obj.del();
+                    $.ajax({
+                        url : "question/deleteQuesttions",
+                        async : true,
+                        type : "POST",
+                        data : {
+                            "idarr" : data.id
+                        },
+                        success : function(data) {
+                            // alert(data);
+                            // 删除成功后刷新页面
+                            window.location.reload();
+                        },
+                        error : function() {
+                            alert("请求失败");
+                        },
+                        dataType : "text"
+                    });
+                    layer.msg('删除成功');
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page_editQuestion']
+                    ,title: '修改Q&A'
+                    ,shade: 0.5
+                    ,area: ['800px', '550px'],
+                    success: function (layero, index) {
+                        var id = data.id;
+                        var body = layer.getChildFrame('body',index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryOnLoad(data.id);
+                    }
+                    ,end: function () {
+                        $(".layui-laypage-btn")[0].click();
+                    }
+                });
+            }
+        });
+        //监听删除按钮
+        $('.delete .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('.add_button').on('click',function (){
+            layer.open({
+                type: 2
+                ,offset: 'auto'
+                ,id: 'saveAuto'
+                ,content: ['page_addQuestion']
+                ,title: '创建Q&A'
+                ,shade: 0.5
+                ,area: ['800px', '550px']
+                ,end: function () {
+                $(".layui-laypage-btn")[0].click();
+            }
+            });
+        });
+    });
+</script>
+</html>

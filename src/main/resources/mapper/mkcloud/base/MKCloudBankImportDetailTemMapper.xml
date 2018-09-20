@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBankImportDetailTemMapper">
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudBankImportDetailTem">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="batch_id" jdbcType="VARCHAR" property="batchId" />
+    <result column="apply_id" jdbcType="VARCHAR" property="applyId" />
+    <result column="apply_name" jdbcType="VARCHAR" property="applyName" />
+    <result column="apply_mobile" jdbcType="VARCHAR" property="applyMobile" />
+    <result column="apply_id_card" jdbcType="VARCHAR" property="applyIdCard" />
+    <result column="apply_bank" jdbcType="VARCHAR" property="applyBank" />
+    <result column="apply_product" jdbcType="VARCHAR" property="applyProduct" />
+    <result column="presenter" jdbcType="VARCHAR" property="presenter" />
+    <result column="apply_card_date" jdbcType="VARCHAR" property="applyCardDate" />
+    <result column="apply_card_time" jdbcType="VARCHAR" property="applyCardTime" />
+    <result column="audit_status" jdbcType="VARCHAR" property="auditStatus" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updator" jdbcType="VARCHAR" property="updator" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, batch_id, apply_id, apply_name, apply_mobile, apply_id_card, apply_bank, apply_product, 
+    presenter, apply_card_date, apply_card_time, audit_status, remark, create_time, update_time, 
+    is_delete, creator, updator, version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_bank_import_detail_tem
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from mkcloud_bank_import_detail_tem
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBankImportDetailTem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_bank_import_detail_tem (batch_id, apply_id, apply_name, 
+      apply_mobile, apply_id_card, apply_bank, 
+      apply_product, presenter, apply_card_date, 
+      apply_card_time, audit_status, remark, 
+      create_time, update_time, is_delete, 
+      creator, updator, version
+      )
+    values (#{batchId,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{applyName,jdbcType=VARCHAR}, 
+      #{applyMobile,jdbcType=VARCHAR}, #{applyIdCard,jdbcType=VARCHAR}, #{applyBank,jdbcType=VARCHAR}, 
+      #{applyProduct,jdbcType=VARCHAR}, #{presenter,jdbcType=VARCHAR}, #{applyCardDate,jdbcType=VARCHAR}, 
+      #{applyCardTime,jdbcType=VARCHAR}, #{auditStatus,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBankImportDetailTem">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_bank_import_detail_tem
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="batchId != null">
+        batch_id,
+      </if>
+      <if test="applyId != null">
+        apply_id,
+      </if>
+      <if test="applyName != null">
+        apply_name,
+      </if>
+      <if test="applyMobile != null">
+        apply_mobile,
+      </if>
+      <if test="applyIdCard != null">
+        apply_id_card,
+      </if>
+      <if test="applyBank != null">
+        apply_bank,
+      </if>
+      <if test="applyProduct != null">
+        apply_product,
+      </if>
+      <if test="presenter != null">
+        presenter,
+      </if>
+      <if test="applyCardDate != null">
+        apply_card_date,
+      </if>
+      <if test="applyCardTime != null">
+        apply_card_time,
+      </if>
+      <if test="auditStatus != null">
+        audit_status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="updator != null">
+        updator,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="batchId != null">
+        #{batchId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyName != null">
+        #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyMobile != null">
+        #{applyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="applyIdCard != null">
+        #{applyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBank != null">
+        #{applyBank,jdbcType=VARCHAR},
+      </if>
+      <if test="applyProduct != null">
+        #{applyProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="presenter != null">
+        #{presenter,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCardDate != null">
+        #{applyCardDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCardTime != null">
+        #{applyCardTime,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null">
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBankImportDetailTem">
+    update mkcloud_bank_import_detail_tem
+    <set>
+      <if test="batchId != null">
+        batch_id = #{batchId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+        apply_id = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="applyName != null">
+        apply_name = #{applyName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyMobile != null">
+        apply_mobile = #{applyMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="applyIdCard != null">
+        apply_id_card = #{applyIdCard,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBank != null">
+        apply_bank = #{applyBank,jdbcType=VARCHAR},
+      </if>
+      <if test="applyProduct != null">
+        apply_product = #{applyProduct,jdbcType=VARCHAR},
+      </if>
+      <if test="presenter != null">
+        presenter = #{presenter,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCardDate != null">
+        apply_card_date = #{applyCardDate,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCardTime != null">
+        apply_card_time = #{applyCardTime,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null">
+        audit_status = #{auditStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null">
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBankImportDetailTem">
+    update mkcloud_bank_import_detail_tem
+    set batch_id = #{batchId,jdbcType=VARCHAR},
+      apply_id = #{applyId,jdbcType=VARCHAR},
+      apply_name = #{applyName,jdbcType=VARCHAR},
+      apply_mobile = #{applyMobile,jdbcType=VARCHAR},
+      apply_id_card = #{applyIdCard,jdbcType=VARCHAR},
+      apply_bank = #{applyBank,jdbcType=VARCHAR},
+      apply_product = #{applyProduct,jdbcType=VARCHAR},
+      presenter = #{presenter,jdbcType=VARCHAR},
+      apply_card_date = #{applyCardDate,jdbcType=VARCHAR},
+      apply_card_time = #{applyCardTime,jdbcType=VARCHAR},
+      audit_status = #{auditStatus,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      updator = #{updator,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

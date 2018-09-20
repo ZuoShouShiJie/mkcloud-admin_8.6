@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceUserAccountMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="can_withdraw_money" property="canWithdrawMoney" jdbcType="DECIMAL" />
+    <result column="withdrawed_money" property="withdrawedMoney" jdbcType="DECIMAL" />
+    <result column="income_money" property="incomeMoney" jdbcType="DECIMAL" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version_num" property="versionNum" jdbcType="BIGINT" />
+    <result column="is_flag" property="isFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, can_withdraw_money, withdrawed_money, income_money, user_name, `status`, 
+    create_time, update_time, version_num, is_flag
+  </sql>
+
+  <select id="checkUserBalance" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+
+    select can_withdraw_money, withdrawed_money, income_money
+    from finance_user_account
+    where 1=1
+
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=BIGINT}
+    </if>
+    <if test="canWithdrawMoney != null" >
+      and can_withdraw_money = #{canWithdrawMoney,jdbcType=DECIMAL}
+    </if>
+    <if test="withdrawedMoney != null" >
+      and withdrawed_money = #{withdrawedMoney,jdbcType=DECIMAL}
+    </if>
+    <if test="incomeMoney != null" >
+      and income_money = #{incomeMoney,jdbcType=DECIMAL}
+    </if>
+    <if test="userName != null" >
+      and user_name = #{userName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null" >
+      and `status` = #{status,jdbcType=VARCHAR}
+    </if>
+    <if test="createTime != null" >
+      and create_time = #{createTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updateTime != null" >
+      and update_time = #{updateTime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="versionNum != null" >
+      and version_num = #{versionNum,jdbcType=BIGINT}
+    </if>
+    <if test="isFlag != null" >
+      and is_flag = #{isFlag,jdbcType=VARCHAR}
+    </if>
+
+  </select>
+
+  <select id="selectAccounts" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from finance_user_account
+    where income_money >0
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_user_account
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_user_account
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_user_account (user_id, can_withdraw_money, withdrawed_money, 
+      income_money, user_name, `status`, 
+      create_time, update_time, version_num, 
+      is_flag)
+    values (#{userId,jdbcType=BIGINT}, #{canWithdrawMoney,jdbcType=DECIMAL}, #{withdrawedMoney,jdbcType=DECIMAL}, 
+      #{incomeMoney,jdbcType=DECIMAL}, #{userName,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR},
+      now(), now(), 1,0)
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_user_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="canWithdrawMoney != null" >
+        can_withdraw_money,
+      </if>
+      <if test="withdrawedMoney != null" >
+        withdrawed_money,
+      </if>
+      <if test="incomeMoney != null" >
+        income_money,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+        create_time,
+        update_time,
+        version_num,
+        is_flag,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="canWithdrawMoney != null" >
+        #{canWithdrawMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawedMoney != null" >
+        #{withdrawedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeMoney != null" >
+        #{incomeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      now(), now(), 1,0
+    </trim>
+  </insert>
+
+  <update id="upCanWithDrawMoneyAndDownIncome"  >
+    update finance_user_account t set t.can_withdraw_money = t.can_withdraw_money+#{money,jdbcType=DECIMAL},version_num =version_num +1,t.income_money = t.income_money-#{money,jdbcType=DECIMAL}
+    where  id = #{id,jdbcType=BIGINT} and  version_num = #{versionNum,jdbcType=BIGINT}
+  </update>
+
+  <update id="countDownMoney" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    update finance_user_account t set t.can_withdraw_money = t.can_withdraw_money-#{money,jdbcType=DECIMAL},version_num =version_num +1
+    where id = #{id,jdbcType=BIGINT} and t.can_withdraw_money>=#{money,jdbcType=DECIMAL}
+  </update>
+
+  <update id="increaseMoney" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    update finance_user_account t set t.sum_charge_money = t.sum_charge_money+#{money,jdbcType=DECIMAL},t.income_money = t.income_money+#{money,jdbcType=DECIMAL},version_num =version_num +1
+    where  user_id = #{userId,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    update finance_user_account
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="canWithdrawMoney != null" >
+        can_withdraw_money = #{canWithdrawMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawedMoney != null" >
+        withdrawed_money = #{withdrawedMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="incomeMoney != null" >
+        income_money = #{incomeMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionNum != null" >
+        version_num = version_num+1,
+      </if>
+      <if test="isFlag != null" >
+        is_flag = #{isFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.FinanceUserAccount" >
+    update finance_user_account
+    set user_id = #{userId,jdbcType=BIGINT},
+      can_withdraw_money = #{canWithdrawMoney,jdbcType=DECIMAL},
+      withdrawed_money = #{withdrawedMoney,jdbcType=DECIMAL},
+      income_money = #{incomeMoney,jdbcType=DECIMAL},
+      user_name = #{userName,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version_num = version_num+1,
+      is_flag = #{isFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

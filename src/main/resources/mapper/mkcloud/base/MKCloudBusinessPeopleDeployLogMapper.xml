@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleDeployLogMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleDeployLog" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_people_code" property="businessPeopleCode" jdbcType="VARCHAR" />
+    <result column="cus_name" property="cusName" jdbcType="VARCHAR" />
+    <result column="cus_tel" property="cusTel" jdbcType="VARCHAR" />
+    <result column="cus_id_no" property="cusIdNo" jdbcType="VARCHAR" />
+    <result column="business_people_name" property="businessPeopleName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="updater" property="updater" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_people_code, cus_name, cus_tel, cus_id_no, business_people_name, create_time, 
+    update_time, is_delete, creater, updater, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people_deploy_log
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_business_people_deploy_log
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleDeployLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people_deploy_log (business_people_code, cus_name, cus_tel, 
+      cus_id_no, business_people_name, create_time, 
+      update_time, is_delete, creater, 
+      updater, version)
+    values (#{businessPeopleCode,jdbcType=VARCHAR}, #{cusName,jdbcType=VARCHAR}, #{cusTel,jdbcType=VARCHAR}, 
+      #{cusIdNo,jdbcType=VARCHAR}, #{businessPeopleName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{creater,jdbcType=VARCHAR}, 
+      #{updater,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleDeployLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people_deploy_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleCode != null" >
+        business_people_code,
+      </if>
+      <if test="cusName != null" >
+        cus_name,
+      </if>
+      <if test="cusTel != null" >
+        cus_tel,
+      </if>
+      <if test="cusIdNo != null" >
+        cus_id_no,
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="updater != null" >
+        updater,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleCode != null" >
+        #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null" >
+        #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusIdNo != null" >
+        #{cusIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleDeployLog" >
+    update mkcloud_business_people_deploy_log
+    <set >
+      <if test="businessPeopleCode != null" >
+        business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null" >
+        cus_tel = #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusIdNo != null" >
+        cus_id_no = #{cusIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleDeployLog" >
+    update mkcloud_business_people_deploy_log
+    set business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      cus_name = #{cusName,jdbcType=VARCHAR},
+      cus_tel = #{cusTel,jdbcType=VARCHAR},
+      cus_id_no = #{cusIdNo,jdbcType=VARCHAR},
+      business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      creater = #{creater,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

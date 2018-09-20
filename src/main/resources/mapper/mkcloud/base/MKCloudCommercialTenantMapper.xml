@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCommercialTenantMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudCommercialTenant" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="merchant_code" property="merchantCode" jdbcType="VARCHAR" />
+    <result column="merchant_name" property="merchantName" jdbcType="VARCHAR" />
+    <result column="cooperation_time" property="cooperationTime" jdbcType="TIMESTAMP" />
+    <result column="cooperative_state" property="cooperativeState" jdbcType="VARCHAR" />
+    <result column="merchant_type" property="merchantType" jdbcType="VARCHAR" />
+    <result column="termination_time" property="terminationTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, merchant_code, merchant_name, cooperation_time, cooperative_state, merchant_type, 
+    termination_time, remarks, create_user, create_time, update_user, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_commercial_tenant
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_commercial_tenant
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommercialTenant" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_commercial_tenant (merchant_code, merchant_name, cooperation_time, 
+      cooperative_state, merchant_type, termination_time, 
+      remarks, create_user, create_time, 
+      update_user, update_time)
+    values (#{merchantCode,jdbcType=VARCHAR}, #{merchantName,jdbcType=VARCHAR}, #{cooperationTime,jdbcType=TIMESTAMP}, 
+      #{cooperativeState,jdbcType=VARCHAR}, #{merchantType,jdbcType=VARCHAR}, #{terminationTime,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommercialTenant" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_commercial_tenant
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        merchant_code,
+      </if>
+      <if test="merchantName != null" >
+        merchant_name,
+      </if>
+      <if test="cooperationTime != null" >
+        cooperation_time,
+      </if>
+      <if test="cooperativeState != null" >
+        cooperative_state,
+      </if>
+      <if test="merchantType != null" >
+        merchant_type,
+      </if>
+      <if test="terminationTime != null" >
+        termination_time,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null" >
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperationTime != null" >
+        #{cooperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cooperativeState != null" >
+        #{cooperativeState,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantType != null" >
+        #{merchantType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminationTime != null" >
+        #{terminationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommercialTenant" >
+    update mkcloud_commercial_tenant
+    <set >
+      <if test="merchantCode != null" >
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null" >
+        merchant_name = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="cooperationTime != null" >
+        cooperation_time = #{cooperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cooperativeState != null" >
+        cooperative_state = #{cooperativeState,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantType != null" >
+        merchant_type = #{merchantType,jdbcType=VARCHAR},
+      </if>
+      <if test="terminationTime != null" >
+        termination_time = #{terminationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommercialTenant" >
+    update mkcloud_commercial_tenant
+    set merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      merchant_name = #{merchantName,jdbcType=VARCHAR},
+      cooperation_time = #{cooperationTime,jdbcType=TIMESTAMP},
+      cooperative_state = #{cooperativeState,jdbcType=VARCHAR},
+      merchant_type = #{merchantType,jdbcType=VARCHAR},
+      termination_time = #{terminationTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>API参数校验规则</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body>
+
+	<div class="search_bar">
+		&emsp; 方法名：
+		<div class="layui-inline">
+			<input class="layui-input" name="method" id="search_method">
+		</div>
+		&emsp;属性：
+		<div class="layui-inline">
+			<input class="layui-input" name="property" id="search_property">
+		</div>
+		<button class="layui-btn" data-type="reload">搜索</button>
+		<button class="layui-btn layui-btn-normal add_button">添加新规则</button>
+	</div>
+
+	<!-- 自动渲染 -->
+	<table class="layui-table" lay-data="{url:'apirule/queryRulesData', page:true, id:'rules'}" lay-filter="rules">
+		<thead>
+			<tr>
+				<th lay-data="{field:'method', sort: true}">方法</th>
+				<th lay-data="{field:'property'}">属性</th>
+				<th lay-data="{field:'whiteRule',edit: 'text'}">白名单</th>
+				<th lay-data="{field:'blackRule',edit: 'text'}">黑名单</th>
+				<th lay-data="{field:'msg',edit: 'text'}">错误提示</th>
+				<th lay-data="{field:'status',align:'center', width:70,edit: 'text'}">状态</th>
+				<th lay-data="{field:'creator'}">创建者</th>
+				<th lay-data="{field:'updator'}">更新者</th>
+			</tr>
+		</thead>
+	</table>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+	layui.use('table', function() {
+		var table = layui.table;
+
+		// 表格数据重载
+		var $ = layui.$, active = {
+			reload : function() {
+				//执行重载
+				table.reload('rules', {
+					page : {
+						curr : 1
+					},
+					where : {
+						method : $('#search_method').val(),
+						property : $('#search_property').val()
+					}
+				});
+			}
+		};
+		// 添加搜索点击事件监听
+		$('.search_bar .layui-btn').on('click', function() {
+			var type = $(this).data('type');
+			active[type] ? active[type].call(this) : '';
+		});
+		//监听单元格编辑
+		table.on('edit(rules)', function(obj) {
+			var value = obj.value //得到修改后的值
+			, editData = obj.data //得到所在行所有键值
+			, field = obj.field; //得到字段
+			layer.msg('正在修改[方法: ' + editData.method + '，属性: ' + editData.property + ']的配置');
+			
+			// 发现有字段变更之后，通过ajax更新所有字段
+			$.post("apirule/saveRule", {
+				method:editData.method,
+				property:editData.property,
+				whiteRule:editData.whiteRule,
+				blackRule:editData.blackRule,
+				msg: editData.msg,
+				status: editData.status
+			}, function(result) {
+				if (true) {
+					layer.msg('[方法: ' + editData.method + '，属性: ' + editData.property + ']的配置已更新');
+				} else {
+					layer.open({
+				        type: 1
+				        ,offset: 'auto'
+				        ,id: 'saveAuto'
+				        ,content: '<div style="padding: 20px 20px;">更新失败<br>error：' + result.errorCode + '<br>message：' + result.errorMessage +'</div>'
+				        ,btn: '关闭全部'
+				        ,btnAlign: 'c' //按钮居中
+				        ,shade: 0 //不显示遮罩
+				        ,yes: function(){
+				          	layer.closeAll();
+				        }
+				      });
+				}
+			});
+		});
+		
+		$('.add_button').on('click',function (){
+			layer.open({
+		        type: 2
+		        ,offset: 'auto'
+		        ,id: 'saveAuto'
+		        ,content: ['page?page=addRule']
+		        ,title: '添加新规则'
+		        ,shade: 0.5
+		        ,area: ['500px', '450px']
+		      });
+		});
+
+	});
+</script>
+</html>

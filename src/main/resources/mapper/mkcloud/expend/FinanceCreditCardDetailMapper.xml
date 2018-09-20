@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceCreditCardDetailMapper" >
+  <select id="selectByProductIdList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_credit_card_detail
+    where product_id in
+    <foreach item="productId" collection="productIds" open="(" close=")" separator=",">
+      #{productId,jdbcType=BIGINT}
+    </foreach>
+  </select>
+  <select id="selectByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_credit_card_detail
+    where product_id = #{productId,jdbcType=BIGINT}
+  </select>
+  <!--逻辑删除-->
+  <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long" >
+    update finance_credit_card_detail
+    set is_delete = 1
+    where product_id = #{productId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByProductIdSelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceCreditCardDetail" >
+    update finance_credit_card_detail
+    <set >
+      <if test="passRate != null" >
+        pass_rate = #{passRate,jdbcType=VARCHAR},
+      </if>
+      <if test="rebackCashDesc != null" >
+        reback_cash_desc = #{rebackCashDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="detailPageUrl != null" >
+        detail_page_url = #{detailPageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=BIGINT}
+  </update>
+
+</mapper>

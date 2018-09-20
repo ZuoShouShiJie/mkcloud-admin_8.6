@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>结算规则配置</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+<form id="editForm" class="layui-form"  onsubmit="return false"  style="margin:20px 10px;">
+    <div class="search_bar" style="margin-top: 20px">
+
+        <div class="layui-form-item" style="margin-bottom: 3px;">
+            <label class="layui-form-label" style="width: 100px">商户编码：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="merchantCode" placeholder="请输入商户编码">
+            </div>
+            <label class="layui-form-label" style="width: 100px;"> 商户名称：</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input" id="merchantName" placeholder="请输入商户名称">
+            </div>
+        </div>
+        <br/>
+        <div class="layui-form-item" style="margin-bottom: 3px;">
+            <div class="layui-input-block">
+                <br>
+                <button class="layui-btn" data-type="reload" style="margin-left: 20px;">查询</button>
+                <button data-type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+            <button class="layui-btn layui-btn-normal add_button">新增</button>
+        </div>
+        <!-- 自动渲染 -->
+        <table class="layui-table" lay-data="{url:'PrepaymentRuleConfiguration/selectPrepaymentRuleConfiguration?',method:'post', id:'mkcloud'}" lay-filter="mkcloud">
+            <thead>
+            <tr>
+                <th lay-data="{align:'center',field:'order',width:70,type:'numbers'}">序列</th>
+                <th lay-data="{align:'center',field:'merchantCode'}">商户编码</th>
+                <th lay-data="{align:'center',field:'merchantName'}">商户名称</th>
+                <th lay-data="{align:'center',field:'settlementTypeName'}">费用类型</th>
+                <th lay-data="{align:'center',field:'price'}">费用</th>
+                <th lay-data="{align:'center',field:'show'}">备注</th>
+                <th lay-data="{align:'center',field:'stateName'}">状态</th>
+                <th lay-data="{align:'center', toolbar: '#barDemo'}">操作</th>
+            </tr>
+            </thead>
+        </table>
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="maint">维护</a>
+            <!--  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        </script>
+    </div>
+</form>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table', 'laydate'], function() {
+        var table = layui.table;
+        var laydate = layui.laydate;
+        // 搜索注册时间
+        laydate.render({
+            elem: '#cooperationTimeBegin'
+        });
+        laydate.render({
+            elem: '#cooperationTimeEnd'
+        });
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('mkcloud', {
+                    where : {
+                        merchantCode : $('#merchantCode').val(),
+                        merchantName : $('#merchantName').val(),
+
+                    }
+                });
+            },
+            reset: function () {
+                $('#merchantCode').val("");
+                $('#merchantName').val("");
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(mkcloud)', function(obj){
+            var data = obj.data;
+            var id = data.id;
+            //alert(data.id);
+            if(obj.event === 'detail'){
+                layer.msg('seqNo：'+ data.seqNo + ' 的删除操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('是否确定删除数据？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url:'creditCardProduct/delCreditCardProductData',
+                        type:'post',
+                        dataType:'json',
+                        data:{
+                            businessPeopleId:id
+                        },
+                        success:function (res) {
+                            if(res.code >0){
+                                layer.alert('删除失败');
+                            }else {
+                                layer.msg(status.msg,{
+                                    icon:1,
+                                    offset: 'rb',//右下角弹出
+                                    title: false,//不显示标题
+                                    closeBtn: 0, //不显示关闭按钮
+                                    shade: [0],//不显示遮罩层
+                                    time: 2000, //2秒后自动关闭
+                                    anim: 4,//动画效果
+                                });
+                                layui.table.reload('mkcloud'); //更新成功刷新当前数据表格 分页默认为当前页
+
+                            }
+                        },
+                        error:function (res) {
+                            layer.alert('网络错误!');
+                        }
+                    });
+                });
+            } else if(obj.event === 'maint'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=updateMprepaymentRuleConfiguration']
+                    ,title: '维护'
+                    ,shade: 0.7
+                    ,area: ['800px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        subForm.find('#opMethod').val("edit");
+                        subForm.find('#id').val(data.id);
+                        subForm.find('#merchantCode_k').val(data.merchantCode);
+                        subForm.find('#merchantCode').val(data.merchantCode);
+                        subForm.find('#merchantCode1').val(data.merchantCode);
+                        subForm.find('#merchantName').val(data.merchantName);
+                        subForm.find('#settlementTypeName').val(data.settlementTypeName);
+                        subForm.find('#settlementType').val(data.settlementType);
+                        subForm.find('#price').val(data.price);
+                        subForm.find('#show').val(data.show);
+                        subForm.find('#settltmentBeginDate').val(data.settltmentBeginDate);
+                        subForm.find('#settlementEndDate').val(data.settlementEndDate);
+                        if(data.state=="1"){
+                            subForm.find('#Yes').prop("checked",true);
+                        }else {
+                            subForm.find('#No').prop("checked",true);
+                        }
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryUserTest();
+                    }
+                    ,end: function () {
+                        //location.reload();
+                        $(".layui-laypage-btn")[0].click();
+
+                    }
+                });
+            }
+        });
+        $('.add_button').on('click',function (){
+            layer.open({
+                type: 2
+                ,offset: 'auto'
+                ,id: 'saveAuto'
+                ,content: ['page?page=addMprepaymentRuleConfiguration']
+                ,title: '新增'
+                ,shade: 0.7
+                ,area: ['800px', '450px']
+                ,success: function(layero, index){
+                    var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                    var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                    subForm.find('#opMethod').val("add");
+                }
+                ,end: function () {
+                    //location.reload();
+                    $(".layui-laypage-btn")[0].click();
+
+                }
+            });
+        });
+
+    });
+</script>
+</html>

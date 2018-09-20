@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+
+<div class="search_bar" style="margin-top: 20px">
+    &emsp; 用户名：
+    <div class="layui-inline">
+        <input class="layui-input" name="userName" placeholder="请输入用户名" id="userName">
+    </div>&emsp;
+    <button class="layui-btn" data-type="reload" style="margin-left: 20px;">查询</button>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'user/queryUserInfoData',method:'post', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'seqNo',type:'numbers'}">序号</th>
+        <th lay-data="{align:'center',field:'userId'}">用户名</th>
+        <th lay-data="{align:'center',field:'status'}">状态</th>
+        <th lay-data="{align:'center',field:'createTime'}">生成时间</th>
+        <th lay-data="{align:'center',field:'updateTime'}">修改时间</th>
+    </tr>
+    </thead>
+</table>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        method : $('#userName').val()
+                    }
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</html>

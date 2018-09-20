@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceOperationRecordMapper" >
+  <select id="selectCountByProductId" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from finance_operation_record
+    where product_id = #{productId,jdbcType=BIGINT}
+    <if test="userIds != null">
+     	and user_id in
+	    <foreach item="userId" collection="userIds" open="(" close=")" separator=",">
+		       #{userId,jdbcType=BIGINT}
+	    </foreach>
+    </if>
+    and create_time &gt;= #{beginTime,jdbcType=TIMESTAMP} 
+    and create_time &lt;= #{endTime,jdbcType=TIMESTAMP} 
+  </select>
+</mapper>

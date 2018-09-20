@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceProductMainMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.FinanceProductMain" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="redirect_url" property="redirectUrl" jdbcType="VARCHAR" />
+    <result column="amount_type" property="amountType" jdbcType="INTEGER" />
+    <result column="total_bonus" property="totalBonus" jdbcType="DECIMAL" />
+    <result column="terminal_bonus" property="terminalBonus" jdbcType="DECIMAL" />
+    <result column="direct_bonus" property="directBonus" jdbcType="DECIMAL" />
+    <result column="indirect_bonus" property="indirectBonus" jdbcType="DECIMAL" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="seq_no" property="seqNo" jdbcType="INTEGER" />
+    <result column="cashback_date" property="cashbackDate" jdbcType="VARCHAR" />
+    <result column="is_show" property="isShow" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updator" property="updator" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_name, `type`, redirect_url, amount_type, total_bonus, terminal_bonus, 
+    direct_bonus, indirect_bonus, logo_url, seq_no, cashback_date, is_show, create_time, 
+    update_time, is_delete, creator, updator, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_product_main
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_product_main
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" parameterType="mkcloudadmin.model.mkcloud.po.FinanceProductMain" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_product_main (product_name, `type`, redirect_url, 
+      amount_type, total_bonus, terminal_bonus, 
+      direct_bonus, indirect_bonus, logo_url, 
+      seq_no, cashback_date, is_show, 
+      create_time, update_time, is_delete, 
+      creator, updator, version
+      )
+    values (#{productName,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{redirectUrl,jdbcType=VARCHAR}, 
+      #{amountType,jdbcType=INTEGER}, #{totalBonus,jdbcType=DECIMAL}, #{terminalBonus,jdbcType=DECIMAL}, 
+      #{directBonus,jdbcType=DECIMAL}, #{indirectBonus,jdbcType=DECIMAL}, #{logoUrl,jdbcType=VARCHAR}, 
+      #{seqNo,jdbcType=INTEGER}, #{cashbackDate,jdbcType=VARCHAR}, #{isShow,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, 
+      #{creator,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" parameterType="mkcloudadmin.model.mkcloud.po.FinanceProductMain" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_product_main
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+      <if test="redirectUrl != null" >
+        redirect_url,
+      </if>
+      <if test="amountType != null" >
+        amount_type,
+      </if>
+      <if test="totalBonus != null" >
+        total_bonus,
+      </if>
+      <if test="terminalBonus != null" >
+        terminal_bonus,
+      </if>
+      <if test="directBonus != null" >
+        direct_bonus,
+      </if>
+      <if test="indirectBonus != null" >
+        indirect_bonus,
+      </if>
+      <if test="logoUrl != null" >
+        logo_url,
+      </if>
+      <if test="seqNo != null" >
+        seq_no,
+      </if>
+      <if test="cashbackDate != null" >
+        cashback_date,
+      </if>
+      <if test="isShow != null" >
+        is_show,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="updator != null" >
+        updator,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="redirectUrl != null" >
+        #{redirectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="amountType != null" >
+        #{amountType,jdbcType=INTEGER},
+      </if>
+      <if test="totalBonus != null" >
+        #{totalBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="terminalBonus != null" >
+        #{terminalBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="directBonus != null" >
+        #{directBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="indirectBonus != null" >
+        #{indirectBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="logoUrl != null" >
+        #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="seqNo != null" >
+        #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="cashbackDate != null" >
+        #{cashbackDate,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null" >
+        #{isShow,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceProductMain" >
+    update finance_product_main
+    <set >
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="redirectUrl != null" >
+        redirect_url = #{redirectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="amountType != null" >
+        amount_type = #{amountType,jdbcType=INTEGER},
+      </if>
+      <if test="totalBonus != null" >
+        total_bonus = #{totalBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="terminalBonus != null" >
+        terminal_bonus = #{terminalBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="directBonus != null" >
+        direct_bonus = #{directBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="indirectBonus != null" >
+        indirect_bonus = #{indirectBonus,jdbcType=DECIMAL},
+      </if>
+      <if test="logoUrl != null" >
+        logo_url = #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="seqNo != null" >
+        seq_no = #{seqNo,jdbcType=INTEGER},
+      </if>
+      <if test="cashbackDate != null" >
+        cashback_date = #{cashbackDate,jdbcType=VARCHAR},
+      </if>
+      <if test="isShow != null" >
+        is_show = #{isShow,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.FinanceProductMain" >
+    update finance_product_main
+    set product_name = #{productName,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=INTEGER},
+      redirect_url = #{redirectUrl,jdbcType=VARCHAR},
+      amount_type = #{amountType,jdbcType=INTEGER},
+      total_bonus = #{totalBonus,jdbcType=DECIMAL},
+      terminal_bonus = #{terminalBonus,jdbcType=DECIMAL},
+      direct_bonus = #{directBonus,jdbcType=DECIMAL},
+      indirect_bonus = #{indirectBonus,jdbcType=DECIMAL},
+      logo_url = #{logoUrl,jdbcType=VARCHAR},
+      seq_no = #{seqNo,jdbcType=INTEGER},
+      cashback_date = #{cashbackDate,jdbcType=VARCHAR},
+      is_show = #{isShow,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      updator = #{updator,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

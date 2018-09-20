@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleAttMapper" >
+
+  <!--根据business_people_id删除-->
+  <delete id="deleteByPeopleId" parameterType="java.lang.String" >
+    delete from mkcloud_business_people_att
+    where business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <!--根据推广员编号查看推广人员-->
+  <select id="selectPeopleCode" resultMap="BaseResultMap" parameterType="java.lang.String"  >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people_att
+    where  business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+  </select>
+
+
+  <update id="updateByBusinessPeopleCodeAndAttName" parameterType="java.lang.String" >
+    update mkcloud_business_people_att
+        set attachment_address = #{attachmentAddress,jdbcType=VARCHAR}
+
+    where  business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+    and attachment_name = #{attachmentName,jdbcType=VARCHAR}
+  </update>
+</mapper>

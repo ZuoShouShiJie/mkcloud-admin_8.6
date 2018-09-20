@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCommercialTenantMapper" >
+  <select id="selectByList" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_commercial_tenant
+    where 1=1
+    <if test="merchantCode != null and merchantCode !='' " >
+     and  merchant_code = #{merchantCode,jdbcType=VARCHAR}
+    </if>
+    <if test="merchantName != null and merchantName !=''  " >
+      and  merchant_name = #{merchantName,jdbcType=VARCHAR}
+    </if>
+    <if test="cooperationTimeBegin != null" >
+      and  cooperation_time >= #{cooperationTimeBegin,jdbcType=TIMESTAMP}
+    </if>
+    <if test="cooperationTimeEnd != null" >
+      and  cooperation_time &lt;= #{cooperationTimeEnd,jdbcType=TIMESTAMP}
+    </if>
+    <if test="cooperativeState != null and cooperativeState != '' " >
+      and  cooperative_state = #{cooperativeState,jdbcType=VARCHAR}
+    </if>
+    ORDER BY merchant_code
+  </select>
+</mapper>

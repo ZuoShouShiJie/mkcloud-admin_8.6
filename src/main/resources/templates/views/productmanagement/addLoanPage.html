@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>创建贷款</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body>
+
+<form id="editForm" class="layui-form" action="creditCardProduct/saveCreditCardProductData" onsubmit="return false"  style="margin:20px 10px;">
+    <input id="opMethod" type="hidden" name="opMethod" />
+    <input id="productId" type="hidden" name="productId" />
+    <input id="institutionId_t" type="hidden" name="institutionId_t" />
+    <div class="layui-form-item" pane="">
+        <label class="layui-form-label">是否启用</label>
+        <div class="layui-input-block">
+            <input id="Yes" name="status" value="1" title="是" checked="" type="radio">
+            <input id="No" name="status" value="0" title="否" type="radio">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品编码</label>
+        <div class="layui-input-block">
+            <input id="productCode" name="productCode" lay-verify="checkCode" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品名称</label>
+        <div class="layui-input-block">
+            <input id="productName" name="productName" lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">贷款类型</label>
+        <div class="layui-input-block">
+            <select id="type" name="type" lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+                <option value="极速贷">极速贷</option>
+                <option value="专业贷">专业贷</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转链接</label>
+        <div class="layui-input-block">
+            <input id="pointUrl" name="pointUrl" lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-upload">
+        <label class="layui-form-label">详情页</label>
+        <div class="layui-upload">
+            <input id="detailPageUrl" type="hidden" name="detailPageUrl"  />
+            <button type="button" class="layui-btn"  id="detailPage">上传图片</button>
+            <div>
+                <label class="layui-form-label">详情页显示</label>
+                <div class="layui-upload-list" style="margin-left:100px;">
+                    <img class="layui-upload-img" id="showDetailLogo" style="height:80px;width:80px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-upload">
+        <label class="layui-form-label">背景图片</label>
+        <div class="layui-upload">
+            <input id="logoUrl" type="hidden" name="logoUrl"  />
+            <button type="button" class="layui-btn"  id="logo">上传图片</button>
+            <div>
+                <label class="layui-form-label">背景图片显示</label>
+                <div class="layui-upload-list" style="margin-left:100px;">
+                    <img class="layui-upload-img" id="showLogo" style="height:80px;width:80px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品归属</label>
+        <div class="layui-input-block">
+            <select id="institutionId" name="institutionId" lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+                <option value="">请选择归属机构</option>
+                <!--<option value="01">招商银行</option>-->
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单笔总佣金</label>
+        <div class="layui-input-block">
+            <input id="allCommission" name="allCommission" lay-verify="amountVertify" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">内部推广员佣金</label>
+        <div class="layui-input-block">
+            <input id="inCommission" name="inCommission" lay-verify="amountVertify" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">外部推广员佣金</label>
+        <div class="layui-input-block">
+            <input id="outCommission" name="outCommission" lay-verify="amountVertify" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品描述</label>
+        <div class="layui-input-block">
+            <input id="productDesc" name="productDesc" autocomplete="off" placeholder="" class="layui-input" type="text">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-block">
+            <input id="seqNo" name="seqNo" lay-verify="noZeroInteger" autocomplete="off" placeholder="必填" class="layui-input" type="text">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add_button">立即提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logo'
+            ,url: 'file/uploadImage/'
+            ,size:10240
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    $("[name=logoUrl]").val("");
+                    $('#showLogo').attr('src', "");
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                $("[name=logoUrl]").val(res.src);
+                $('#showLogo').attr('src', res.src);
+                return layer.msg('上传成功');
+            }
+        });
+        //详情页上载
+        var uploadInst = upload.render({
+            elem: '#detailPage'
+            ,url: 'file/uploadImage/'
+            ,size:10240
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    $("[name=detailPageUrl]").val("");
+                    $('#showDetailLogo').attr('src', "");
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                $("[name=detailPageUrl]").val(res.src);
+                $('#showDetailLogo').attr('src', res.src);
+                return layer.msg('上传成功');
+            }
+        });
+
+
+
+    });
+    layui.use([ 'form', 'layedit', 'laydate'], function() {
+        var form = layui.form;
+        var $ = layui.$;//获取jquery组件
+
+        selectRoleName();
+
+        form.verify({
+            amountVertify : function(value) {
+                if(!new RegExp(/^([1-9]\d{1,13}|\d)(\.\d{1,2})?$/).test(value)){
+                    return '请输入金额值';
+                }
+
+            },
+            noZeroInteger : function (value) {
+                if(!new RegExp(/^[1-9]\d*$/).test(value)){
+                    return '请输入正确金额值,保留两位小数';
+                }
+            },
+            checkCode: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(value.trim() == ""){
+                    return '产品编码不能为空';
+                }
+                var opMethod = $("#opMethod").val()
+                var param = {
+                    productCode: $("#productCode").val()
+                }
+                var checkResult = "";
+
+                if (opMethod=="add") {
+                    $.ajax({
+                        url: "loanProduct/checkCode",
+                        type: "GET",
+                        data: param,
+                        async: false,
+                        success: function (result) {
+                            if (result) {
+                                checkResult = "该产品编码已存在";
+                            }
+                        },
+                        error: function () {
+                        }
+                    });
+                }
+                return checkResult;
+            }
+        });
+
+        //监听提交
+        form.on('submit(add_button)', function(editData) {
+            params = editData.field;
+            // 发现有字段变更之后，通过ajax更新所有字段
+            $.post("loanProduct/saveLoanProductData", params, function(result) {
+                if (true) {
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引（父类的弹框）
+                    parent.layer.close(index); //再执行关闭
+                    window.parent.location.reload();
+                    layer.alert('保存成功！');
+                } else {
+                    layer.alert('保存失败：' + result.errorMessage);
+                }
+            });
+
+            return false;
+        });
+
+        function selectRoleName(){
+
+            $.ajax({
+                url:"institution/queryInstitution",
+                type:"POST",
+                dataType:"json",
+                data:{
+                    type:""
+                },
+                success:function(result){
+                    var institutionId_t= $("#institutionId_t").val();
+                    // console.log(document.getElementById("institutionId"));
+                    var list = result.data;    //返回的数据
+                    var role = document.getElementById("institutionId");        //add_role_name给select定义的id
+                    for(var i=0;i<list.length;i++){
+                        var option = document.createElement("option");    // 创建添加option属性
+                        option.setAttribute("value",list[i].institutionCode);                  // 给option的value添加值
+                        option.innerText=list[i].institutionName;             // 打印option对应的纯文本 （超级管理员、管理员）
+                        if (list[i].institutionCode==institutionId_t) {
+                            option.defaultSelected=true;                       //赋默认值
+                        }
+                        role.appendChild(option);                          // 给select 添加option子标签
+                        form.render("select");                                // 刷性select，显示出数据
+                    }
+                }
+            });
+        }
+
+    });
+
+
+</script>
+</html>

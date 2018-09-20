@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>添加API参数校验规则</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body>
+	
+	<form class="layui-form layui-form-pane" action="apirule/saveRule" onsubmit="return false"  style="margin:20px 10px;">
+		<div class="layui-form-item">
+			<label class="layui-form-label">方法</label>
+			<div class="layui-input-block">
+				<input type="text" name="method" autocomplete="off" placeholder="可为空" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">属性</label>
+			<div class="layui-input-block">
+				<input type="text" name="property" lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">白名单</label>
+			<div class="layui-input-block">
+				<input type="text" name="whiteRule" lay-verify="whiteRule" autocomplete="off" placeholder="白名单和黑名单至少填一个" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">黑名单</label>
+			<div class="layui-input-block">
+				<input type="text" name="blackRule" lay-verify="blackRule" autocomplete="off" placeholder="白名单和黑名单至少填一个" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">错误提示</label>
+			<div class="layui-input-block">
+				<input type="text" name="msg"  lay-verify="required" autocomplete="off" placeholder="必填" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-block">
+		      <input type="checkbox" checked="" value="1" name="status" lay-skin="switch" lay-text="ON|OFF">
+		    </div>
+		</div>
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<button class="layui-btn" lay-submit="" lay-filter="add_button">立即提交</button>
+				<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+			</div>
+		</div>
+	</form>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script type="text/javascript">
+	layui.use([ 'form', 'layedit', 'laydate'], function() {
+		var form = layui.form;
+		var $ = layui.$;//获取jquery组件
+		
+		//自定义验证规则
+		var whiteRule_value="";
+		var blackRule_value="";
+		form.verify({
+			whiteRule : function(value) {
+				whiteRule_value = value;
+			},
+			blackRule : function(value) {
+				blackRule_value = value;
+				if (whiteRule_value.length < 1 && blackRule_value.length < 1) {
+					return '白名单和黑名单至少填一个';
+				}
+			}
+		});
+		//监听提交
+		form.on('submit(add_button)', function(editData) {
+			// 发现有字段变更之后，通过ajax更新所有字段
+			$.post("apirule/saveRule", {
+				method : editData.field.method,
+				property : editData.field.property,
+				whiteRule : editData.field.whiteRule,
+				blackRule : editData.field.blackRule,
+				msg : editData.field.msg,
+				status : editData.field.status
+			}, function(result) {
+				if (true) {
+					var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引（父类的弹框）
+					parent.layer.close(index); //再执行关闭  
+					layer.alert('保存成功！');
+				} else {
+					layer.alert('保存失败：' + result.errorMessage);
+				}
+			});
+
+			return false;
+		});
+	});
+</script>
+</html>

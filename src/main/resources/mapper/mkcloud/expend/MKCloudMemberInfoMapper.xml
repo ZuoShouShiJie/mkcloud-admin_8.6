@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudMemberInfoMapper" >
+  <resultMap id="MKCloudMemberInfoVo" type="mkcloudadmin.model.mkcloud.vo.MKCloudMemberInfoVo">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="member_code" property="memberCode" jdbcType="VARCHAR" />
+    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+    <result column="tel" property="mobileNum" jdbcType="VARCHAR" />
+    <result column="ID_no" property="idNo" jdbcType="VARCHAR" />
+    <result column="work_address" property="workAddress" jdbcType="VARCHAR" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="business_people_ID" property="businessPeopleId" jdbcType="VARCHAR" />
+    <result column="business_people_code" property="businessCode" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="has_business" property="hasBusiness" jdbcType="VARCHAR" />
+    <result column="business_status" property="businessStatus" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="create_time" property="registerTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="business_people_name" property="businessName" jdbcType="VARCHAR" />
+    <result column="business_people_type" property="businessType" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <select id="selectMembers" resultMap="MKCloudMemberInfoVo">
+    select
+    m.*,
+    b.business_people_name,b.business_people_type
+    from mkcloud_member_info m
+    left join mkcloud_business_people b on m.business_people_code = b.business_people_code
+    where 0=0
+    <if test="memberCode != null and memberCode !=''">
+      and m.member_code = #{memberCode,jdbcType=VARCHAR}
+    </if>
+    <if test="memberName != null and memberName !=''">
+      and m.member_name = #{memberName,jdbcType=VARCHAR}
+    </if>
+    <if test="memberMobile != null and memberMobile !=''">
+      and m.tel = #{memberMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="businessCode != null and businessCode !=''">
+      and m.business_people_code = #{businessCode,jdbcType=VARCHAR}
+    </if>
+    <if test="businessStatus != null and businessStatus !=''">
+      and m.business_status = #{businessStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="businessName != null and businessName !=''">
+      and b.business_people_name = #{businessName,jdbcType=VARCHAR}
+    </if>
+    <if test="businessMobile != null and businessMobile !=''">
+      and b.tel = #{businessMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="registerBeginDate != null and registerBeginDate !=''">
+      and m.create_time >= #{registerBeginDate,jdbcType=VARCHAR}
+    </if>
+    <if test="registerEndDate != null and registerEndDate !=''">
+      and m.create_time &lt;= #{registerEndDate,jdbcType=VARCHAR}
+    </if>
+    order by m.id
+    <include refid="base.limit" />
+  </select>
+
+  <select id="selectMemberCount" resultType="java.lang.Long">
+    select count(m.id)
+    from mkcloud_member_info m
+    left join mkcloud_business_people b on m.business_people_code = b.business_people_code
+    where 0=0
+    <if test="memberCode != null and memberCode !=''">
+      and m.member_code = #{memberCode,jdbcType=VARCHAR}
+    </if>
+    <if test="memberName != null and memberName !=''">
+      and m.member_name = #{memberName,jdbcType=VARCHAR}
+    </if>
+    <if test="memberMobile != null and memberMobile !=''">
+      and m.tel = #{memberMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="businessCode != null and businessCode !=''">
+      and m.business_people_code = #{businessCode,jdbcType=VARCHAR}
+    </if>
+    <if test="businessStatus != null and businessStatus !=''">
+      and m.business_status = #{businessStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="businessName != null and businessName !=''">
+      and b.business_people_name = #{businessName,jdbcType=VARCHAR}
+    </if>
+    <if test="businessMobile != null and businessMobile !=''">
+      and b.tel = #{businessMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="registerBeginDate != null and registerBeginDate !=''">
+      and m.create_time >= #{registerBeginDate,jdbcType=VARCHAR}
+    </if>
+    <if test="registerEndDate != null and registerEndDate !=''">
+      and m.create_time &lt;= #{registerEndDate,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="selectFullMembers" resultMap="MKCloudMemberInfoVo">
+    select
+    m.*,
+    b.business_people_name,b.business_people_type
+    from mkcloud_member_info m
+    left join mkcloud_business_people b on m.business_people_code = b.business_people_code
+    where 0=0
+    <if test="memberCode != null and memberCode !=''">
+      and m.member_code = #{memberCode,jdbcType=VARCHAR}
+    </if>
+    <if test="memberName != null and memberName !=''">
+      and m.member_name = #{memberName,jdbcType=VARCHAR}
+    </if>
+    <if test="memberMobile != null and memberMobile !=''">
+      and m.tel = #{memberMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="businessCode != null and businessCode !=''">
+      and m.business_people_code = #{businessCode,jdbcType=VARCHAR}
+    </if>
+    <if test="businessStatus != null and businessStatus !=''">
+      and m.business_status = #{businessStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="businessName != null and businessName !=''">
+      and b.business_people_name = #{businessName,jdbcType=VARCHAR}
+    </if>
+    <if test="businessMobile != null and businessMobile !=''">
+      and b.tel = #{businessMobile,jdbcType=VARCHAR}
+    </if>
+    <if test="registerBeginDate != null and registerBeginDate !=''">
+      and m.create_time >= #{registerBeginDate,jdbcType=VARCHAR}
+    </if>
+    <if test="registerEndDate != null and registerEndDate !=''">
+      and m.create_time &lt;= #{registerEndDate,jdbcType=VARCHAR}
+    </if>
+    order by m.id
+  </select>
+  <select id="selectByTelList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_member_info
+    where tel in
+    <foreach item="tel" collection="telList" open="(" close=")" separator=",">
+      #{tel,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+
+    <select id="selectByTel" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from mkcloud_member_info
+        where tel = #{tel,jdbcType=VARCHAR}
+    </select>
+
+  <select id="selectByClientBaseInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_member_info
+    where 1=1
+      and member_name= #{name,jdbcType=VARCHAR}
+      and tel like #{mobileNum,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByFullConditionInfo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_member_info
+    where 1=1
+    and member_name= #{name,jdbcType=VARCHAR}
+    and tel = #{mobileNum,jdbcType=VARCHAR}
+  </select>
+
+    <update id="updateBySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+        update mkcloud_member_info
+        <set >
+            <if test="memberCode != null" >
+                member_code = #{memberCode,jdbcType=VARCHAR},
+            </if>
+            <if test="memberName != null" >
+                member_name = #{memberName,jdbcType=VARCHAR},
+            </if>
+       <!--     <if test="tel != null" >
+                tel = #{tel,jdbcType=VARCHAR},
+            </if>-->
+            <if test="idNo != null" >
+                ID_no = #{idNo,jdbcType=VARCHAR},
+            </if>
+            <if test="workAddress != null" >
+                work_address = #{workAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="channelCode != null" >
+                channel_code = #{channelCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessPeopleId != null" >
+                business_people_ID = #{businessPeopleId,jdbcType=VARCHAR},
+            </if>
+            <if test="businessPeopleCode != null" >
+                business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                `state` = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null" >
+                `type` = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="hasBusiness != null" >
+                has_business = #{hasBusiness,jdbcType=VARCHAR},
+            </if>
+            <if test="businessStatus != null" >
+                business_status = #{businessStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null" >
+                open_id = #{openId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null" >
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null" >
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where  tel = #{tel,jdbcType=VARCHAR}
+    </update>
+    <select id="queryMemberCodeByName" resultMap="BaseResultMap">
+        SELECT
+            member_code
+        FROM
+            mkcloud_member_info
+        WHERE
+            member_name = #{applyName,jdbcType=VARCHAR}
+        AND
+            tel = #{applyMobile,jdbcType=VARCHAR}
+    </select>
+
+
+
+
+
+</mapper>

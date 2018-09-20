@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCommissionDetailMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="business_people_ID" property="businessPeopleId" jdbcType="VARCHAR" />
+    <result column="cus_name" property="cusName" jdbcType="VARCHAR" />
+    <result column="cus_tel" property="cusTel" jdbcType="VARCHAR" />
+    <result column="cus_id_no" property="cusIdNo" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="business_people_name" property="businessPeopleName" jdbcType="VARCHAR" />
+    <result column="business_people_commission" property="businessPeopleCommission" jdbcType="DECIMAL" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="detail_id" property="detailId" jdbcType="VARCHAR" />
+    <result column="batch_id" property="batchId" jdbcType="VARCHAR" />
+    <result column="institution_code" property="institutionCode" jdbcType="VARCHAR" />
+    <result column="institution_name" property="institutionName" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="approval_date" property="approvalDate" jdbcType="TIMESTAMP" />
+    <result column="approval_result" property="approvalResult" jdbcType="VARCHAR" />
+    <result column="settlement_id" property="settlementId" jdbcType="VARCHAR" />
+    <result column="commission" property="commission" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="updator" property="updator" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_people_ID, cus_name, cus_tel, cus_id_no, `level`, business_people_name, 
+    business_people_commission, `state`, detail_id, batch_id, institution_code, institution_name, 
+    product_name, approval_date, approval_result, settlement_id, commission, create_time, 
+    update_time, is_delete, creator, updator, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_commission_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_commission_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_commission_detail (business_people_ID, cus_name, cus_tel, 
+      cus_id_no, `level`, business_people_name, 
+      business_people_commission, `state`, detail_id, 
+      batch_id, institution_code, institution_name, 
+      product_name, approval_date, approval_result, 
+      settlement_id, commission, create_time, 
+      update_time, is_delete, creator, 
+      updator, version)
+    values (#{businessPeopleId,jdbcType=VARCHAR}, #{cusName,jdbcType=VARCHAR}, #{cusTel,jdbcType=VARCHAR}, 
+      #{cusIdNo,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{businessPeopleName,jdbcType=VARCHAR}, 
+      #{businessPeopleCommission,jdbcType=DECIMAL}, #{state,jdbcType=VARCHAR}, #{detailId,jdbcType=VARCHAR}, 
+      #{batchId,jdbcType=VARCHAR}, #{institutionCode,jdbcType=VARCHAR}, #{institutionName,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{approvalDate,jdbcType=TIMESTAMP}, #{approvalResult,jdbcType=VARCHAR}, 
+      #{settlementId,jdbcType=VARCHAR}, #{commission,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{updator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_commission_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleId != null" >
+        business_people_ID,
+      </if>
+      <if test="cusName != null" >
+        cus_name,
+      </if>
+      <if test="cusTel != null" >
+        cus_tel,
+      </if>
+      <if test="cusIdNo != null" >
+        cus_id_no,
+      </if>
+      <if test="level != null" >
+        `level`,
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name,
+      </if>
+      <if test="businessPeopleCommission != null" >
+        business_people_commission,
+      </if>
+      <if test="state != null" >
+        `state`,
+      </if>
+      <if test="detailId != null" >
+        detail_id,
+      </if>
+      <if test="batchId != null" >
+        batch_id,
+      </if>
+      <if test="institutionCode != null" >
+        institution_code,
+      </if>
+      <if test="institutionName != null" >
+        institution_name,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="approvalDate != null" >
+        approval_date,
+      </if>
+      <if test="approvalResult != null" >
+        approval_result,
+      </if>
+      <if test="settlementId != null" >
+        settlement_id,
+      </if>
+      <if test="commission != null" >
+        commission,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="updator != null" >
+        updator,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleId != null" >
+        #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null" >
+        #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusIdNo != null" >
+        #{cusIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleCommission != null" >
+        #{businessPeopleCommission,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="detailId != null" >
+        #{detailId,jdbcType=VARCHAR},
+      </if>
+      <if test="batchId != null" >
+        #{batchId,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionCode != null" >
+        #{institutionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionName != null" >
+        #{institutionName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null" >
+        #{approvalDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalResult != null" >
+        #{approvalResult,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementId != null" >
+        #{settlementId,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null" >
+        #{commission,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    update mkcloud_commission_detail
+    <set >
+      <if test="businessPeopleId != null" >
+        business_people_ID = #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="cusName != null" >
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null" >
+        cus_tel = #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusIdNo != null" >
+        cus_id_no = #{cusIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        `level` = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleCommission != null" >
+        business_people_commission = #{businessPeopleCommission,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=VARCHAR},
+      </if>
+      <if test="batchId != null" >
+        batch_id = #{batchId,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionCode != null" >
+        institution_code = #{institutionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionName != null" >
+        institution_name = #{institutionName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null" >
+      approval_date = #{approvalDate,jdbcType=TIMESTAMP},
+    </if>
+      <if test="approvalResult != null" >
+        approval_result = #{approvalResult,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementId != null" >
+        settlement_id = #{settlementId,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    update mkcloud_commission_detail
+    set business_people_ID = #{businessPeopleId,jdbcType=VARCHAR},
+      cus_name = #{cusName,jdbcType=VARCHAR},
+      cus_tel = #{cusTel,jdbcType=VARCHAR},
+      cus_id_no = #{cusIdNo,jdbcType=VARCHAR},
+      `level` = #{level,jdbcType=VARCHAR},
+      business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      business_people_commission = #{businessPeopleCommission,jdbcType=DECIMAL},
+      `state` = #{state,jdbcType=VARCHAR},
+      detail_id = #{detailId,jdbcType=VARCHAR},
+      batch_id = #{batchId,jdbcType=VARCHAR},
+      institution_code = #{institutionCode,jdbcType=VARCHAR},
+      institution_name = #{institutionName,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      approval_date = #{approvalDate,jdbcType=TIMESTAMP},
+      approval_result = #{approvalResult,jdbcType=VARCHAR},
+      settlement_id = #{settlementId,jdbcType=VARCHAR},
+      commission = #{commission,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      creator = #{creator,jdbcType=VARCHAR},
+      updator = #{updator,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

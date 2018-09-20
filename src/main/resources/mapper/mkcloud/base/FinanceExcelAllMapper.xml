@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceExcelAllMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.FinanceExcelAllPage" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="batch_no" property="batchNo" jdbcType="VARCHAR" />
+    <result column="creater" property="creater" jdbcType="VARCHAR" />
+    <result column="updater" property="updater" jdbcType="VARCHAR" />
+    <result column="details_num" property="detailsNum" jdbcType="BIGINT" />
+    <result column="fail_num" jdbcType="BIGINT" property="failNum" />
+    <result column="details_valid_num" property="detailsValidNum" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version_num" property="versionNum" jdbcType="BIGINT" />
+    <result column="is_flag" property="isFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, batch_no, creater, updater, details_num, details_valid_num,fail_num, `status`, create_time,
+    update_time, version_num, is_flag
+  </sql>
+
+  <select id="selectExcelsByExcel" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_excel_all
+    where 1=1
+    <if test="batchNo != null" >
+      and batch_no = #{batchNo,jdbcType=VARCHAR}
+    </if>
+    <if test="detailsNum != null" >
+      and details_num = #{detailsNum,jdbcType=BIGINT}
+    </if>
+    <if test="detailsValidNum != null" >
+      and details_valid_num = #{detailsValidNum,jdbcType=BIGINT}
+    </if>
+    <if test="status != null" >
+      and `status` = #{status,jdbcType=VARCHAR}
+    </if>
+    order by id desc
+    limit #{startRow},#{limit}
+  </select>
+
+  <select id="queryExcelCount" resultType="java.lang.Long" >
+    select count(*) from finance_excel_all
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_excel_all
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_excel_all
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelAllPage" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_excel_all (batch_no, creater, updater, 
+      details_num, details_valid_num, `status`, 
+      create_time, update_time, version_num, 
+      is_flag)
+    values (#{batchNo,jdbcType=VARCHAR}, #{creater,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR}, 
+      #{detailsNum,jdbcType=BIGINT}, #{detailsValidNum,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      now(), now(), 1,0)
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelAllPage" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_excel_all
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="batchNo != null" >
+        batch_no,
+      </if>
+      <if test="creater != null" >
+        creater,
+      </if>
+      <if test="updater != null" >
+        updater,
+      </if>
+      <if test="detailsNum != null" >
+        details_num,
+      </if>
+      <if test="detailsValidNum != null" >
+        details_valid_num,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+        create_time,
+        update_time,
+        version_num,
+        is_flag,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="batchNo != null" >
+        #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="detailsNum != null" >
+        #{detailsNum,jdbcType=BIGINT},
+      </if>
+      <if test="detailsValidNum != null" >
+        #{detailsValidNum,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      now(),
+      now(),
+      1,
+      0
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelAllPage" >
+    update finance_excel_all
+    <set >
+      <if test="batchNo != null" >
+        batch_no = #{batchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creater != null" >
+        creater = #{creater,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        updater = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="detailsNum != null" >
+        details_num = #{detailsNum,jdbcType=BIGINT},
+      </if>
+      <if test="detailsValidNum != null" >
+        details_valid_num =details_valid_num + #{detailsValidNum,jdbcType=BIGINT},
+      </if>
+      <if test="failNum != null" >
+        fail_num =fail_num + #{failNum,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionNum != null" >
+        version_num = #{versionNum,jdbcType=BIGINT},
+      </if>
+      <if test="isFlag != null" >
+        is_flag = #{isFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelAllPage" >
+    update finance_excel_all
+    set batch_no = #{batchNo,jdbcType=VARCHAR},
+      creater = #{creater,jdbcType=VARCHAR},
+      updater = #{updater,jdbcType=VARCHAR},
+      details_num = #{detailsNum,jdbcType=BIGINT},
+      details_valid_num = #{detailsValidNum,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version_num = #{versionNum,jdbcType=BIGINT},
+      is_flag = #{isFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

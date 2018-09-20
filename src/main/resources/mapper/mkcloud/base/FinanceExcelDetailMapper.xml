@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceExcelDetailMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="all_id" property="allId" jdbcType="VARCHAR" />
+    <result column="prod_name" property="prodName" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="error_messge" property="errorMessge" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version_num" property="versionNum" jdbcType="BIGINT" />
+    <result column="is_flag" property="isFlag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, all_id, prod_name, user_name, mobile, money, error_messge, `status`, `type`, 
+    create_time, update_time, version_num, is_flag
+  </sql>
+
+  <select id="selectByPrimaryKeyAndStatus" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from finance_excel_detail
+    where 1=1
+    <if test="allId != null" >
+       and all_id = #{allId,jdbcType=VARCHAR}
+    </if>
+
+    <if test="status != null and status == 'success' " >
+      and  `status` = '00'
+    </if>
+    <if test="status != null and status != 'success' " >
+      and  `status` != '00'
+    </if>
+
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from finance_excel_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from finance_excel_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_excel_detail (all_id, prod_name, user_name, 
+      mobile, money, error_messge, 
+      `status`, `type`, create_time, 
+      update_time, version_num, is_flag
+      )
+    values (#{allId,jdbcType=VARCHAR}, #{prodName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{errorMessge,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},now(), now(), 1,0
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into finance_excel_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="allId != null" >
+        all_id,
+      </if>
+      <if test="prodName != null" >
+        prod_name,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="errorMessge != null" >
+        error_messge,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+        create_time,
+        update_time,
+        version_num,
+        is_flag,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="allId != null" >
+        #{allId,jdbcType=VARCHAR},
+      </if>
+      <if test="prodName != null" >
+        #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="errorMessge != null" >
+        #{errorMessge,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      now(), now(), 1,0
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    update finance_excel_detail
+    <set >
+      <if test="allId != null" >
+        all_id = #{allId,jdbcType=VARCHAR},
+      </if>
+      <if test="prodName != null" >
+        prod_name = #{prodName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="errorMessge != null" >
+        error_messge = #{errorMessge,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionNum != null" >
+        version_num = #{versionNum,jdbcType=BIGINT},
+      </if>
+      <if test="isFlag != null" >
+        is_flag = #{isFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.FinanceExcelDetail" >
+    update finance_excel_detail
+    set all_id = #{allId,jdbcType=VARCHAR},
+      prod_name = #{prodName,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DECIMAL},
+      error_messge = #{errorMessge,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version_num = #{versionNum,jdbcType=BIGINT},
+      is_flag = #{isFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

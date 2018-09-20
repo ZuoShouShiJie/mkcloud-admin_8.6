@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>推广员佣金汇总确认</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+
+<div class="search_bar" style="margin-top: 20px">
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 100px">推广员工号：</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="businessPeopleId"  id="businessPeopleId">
+        </div>
+        <label class="layui-form-label" style="width: 100px">推广员姓名:</label>
+        <div class="layui-input-inline">
+            <input class="layui-input" name="businessPeopleName" id="businessPeopleName">
+        </div>
+        <label class="layui-form-label" style="width: 100px">审批状态：</label>
+        <div class="layui-input-inline">
+            <select id="approvalResult" class="layui-input" type="text">
+                <option value="null" selected>全部</option>
+                <option value="0">待确认</option>
+                <option value="1">已确认</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label" style="width: 100px">确认时间：</label>
+        <div class="layui-input-inline">
+            <input name="beginDate" id="beginDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+        </div>
+        <label class="layui-form-label" style="width: 10px;">~</label>
+        <div class="layui-input-inline">
+            <input name="endDate" id="endDate" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input" type="text">
+        </div>
+        <button class="layui-btn" data-type="reload" style="margin-left: 40px;">查询</button>
+        <button data-type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'commissionManage/queryCommissionManageData',method:'post', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'seqNo',width:100}">序号</th>
+        <th lay-data="{align:'center',field:'businessPeopleType'}">推广员类型</th>
+        <th lay-data="{align:'center',field:'businessPeopleId'}">推广员工号</th>
+        <th lay-data="{align:'center',field:'businessPeopleName'}">推广员姓名</th>
+        <th lay-data="{align:'center',field:'createTime'}">确认时间</th>
+        <th lay-data="{align:'center',field:'settlementCommission',event: 'queryAll',style:'cursor: pointer;text-decoration:underline;color:#09f;'}">推广员分佣金额</th>
+       <!-- <th lay-data="{align:'center',field:'settlementCommission'}">推广员分佣金额</th>-->
+        <th lay-data="{align:'center',field:'stateName'}">状态</th>
+        <th lay-data="{align:'center',field:'confirmTime'}">付款确认时间</th>
+        <th lay-data="{align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/html" id="barDemo">
+
+    <!-- 这里同样支持 laytpl 语法，如： -->
+    {{#  if(d.stateName =="待确认"){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="confirm">确认</a>
+    {{#  } }}
+
+   <!-- <a class="layui-btn layui-btn-xs" lay-event="detail">明细</a>-->
+
+
+</script>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+         ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#beginDate'
+        });
+        laydate.render({
+            elem: '#endDate'
+        });
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        businessPeopleId:$('#businessPeopleId').val(),
+                        businessPeopleName:$('#businessPeopleName').val(),
+                        approvalResult:$('#approvalResult').val(),
+                        beginDate:$('#beginDate').val(),
+                        endDate:$('#endDate').val()
+                    }
+                });
+            },
+            reset: function () {
+                $('#businessPeopleId').val("");
+                $('#businessPeopleName').val("");
+                $('#approvalResult').val("null");
+                $('#beginDate').val("");
+                $('#endDate').val("");
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(finance)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'confirm'){
+
+                 $.ajax({
+                 url:'commissionManage/handleCommissionManage',
+                 type:'post',
+                 dataType:'json',
+                 data:{
+                     settlementCommission:data.settlementCommission,
+                     businessPeopleId:data.businessPeopleId,
+                     businessPeopleName:data.businessPeopleName
+
+                 },
+                 success:function (result) {
+                     layui.table.reload('finance');
+
+                 } ,/*end: function () {
+                         $(".layui-laypage-btn")[0].click();
+
+                     },*/
+                 error:function (res) {
+                 layer.alert('网络错误!');
+                 }
+                 });
+            }  else if(obj.event === 'queryAll'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=commissionAuditDetail']
+                    ,title: '分佣明细'
+                    ,shade: 0.5
+                    ,area: ['1100px', '500px']
+                    ,success: function(layero, index){
+                        var body = layer.getChildFrame('body',index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryOnLoad(data.businessPeopleId,data.settlementId,data.state,data.businessPeopleName,data.businessPeopleLevelName);
+                        /*iframeWin.queryOnLoad(data.businessPeopleId);*/
+                        /*var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var subForm = $(pIframe).find('.search_bar');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        subForm.find('#search_businessPeopleId').val(data.businessPeopleId);
+                        subForm.find('#search_settlementId').val(data.settlementId);
+                        subForm.find('#search_state').val(data.state);*/
+                    }
+                    ,end: function () {
+                        $(".layui-laypage-btn")[0].click();
+
+                    }
+                });
+
+               /* $.ajax({
+                    url:'insuranceProduct/querySingleInsuranceProduct',
+                    type:'post',
+                    dataType:'json',
+                    data:{
+                        productId:id
+                    },
+                    success:function (result) {
+                        var res=result.data;
+                        if (true) {
+                            layer.open({
+                                type: 2
+                                ,offset: 'auto'
+                                ,id: 'saveAuto'
+                                ,content: ['page_addInsurance']
+                                ,title: '编辑保险产品'
+                                ,shade: 0.5
+                                ,area: ['600px', '500px']
+                                ,success: function(layero, index){
+                                    var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                                    var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                                    subForm.find('#opMethod').val("edit");
+                                    subForm.find('#productId').val(res.id);
+                                    subForm.find('#seqNo').val(res.seqNo);
+
+                                    subForm.find('#productName').val(res.productName);
+                                    subForm.find('#terminalBonus').val(res.terminalBonus);
+                                    subForm.find('#directBonus').val(res.directBonus);
+                                    subForm.find('#indirectBonus').val(res.indirectBonus);
+                                    subForm.find('#cashbackDate').val(res.cashbackDate);
+                                }
+                                ,end: function () {
+                                    $(".layui-laypage-btn")[0].click();
+                                    
+                                }
+                            });
+                        }
+                    },
+                    error:function (res) {
+                        layer.alert('网络错误!');
+                    }
+                });*/
+
+
+            }
+        });
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //excel上传
+            var uploadInst = upload.render({
+                elem: '#uploadExcel'
+                ,url: 'feedBackInfoImport/excelUpload/'
+                ,accept:'file'
+                ,done: function(res){
+                    alert(res.msg);
+                }
+                ,error : function(res) {
+                    alert("上传失败");
+                }
+            });
+        });
+        /*$('.add_button').on('click',function (){
+            layer.open({
+                type: 2
+                ,offset: 'auto'
+                ,id: 'saveAuto'
+                ,content: ['page_addInsurance']
+                ,title: '添加保险产品'
+                ,shade: 0.5
+                ,area: ['500px', '450px']
+                ,success: function(layero, index){
+                    var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                    var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                    subForm.find('#opMethod').val("add");
+                }
+                ,end: function () {
+                    $(".layui-laypage-btn")[0].click();
+                }
+            });
+        });*/
+
+    });
+</script>
+</html>

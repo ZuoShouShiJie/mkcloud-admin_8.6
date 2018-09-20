@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudApplicationImportDetailMapper" >
+   <!--根据推广人编号查询-->
+    <select id="selectByBusinessPeopleId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from mkcloud_application_import_detail
+        where   business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+        <if test="applyCardTime != null and applyCardTime !='' " >
+            and   apply_card_time like CONCAT(#{applyCardTime,jdbcType=VARCHAR}, '%')
+        </if>
+        <include refid="base.limit" />
+    </select>
+    <!--根据推广人编号查询-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(id)
+        from mkcloud_application_import_detail
+        where  business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+        <if test="applyCardTime != null and applyCardTime !='' " >
+          and   apply_card_time like CONCAT(#{applyCardTime,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
+
+  <!--查询批次明细条数-->
+  <select id="queryBatchDetailCount" resultType="java.lang.Long">
+      SELECT
+          COUNT(1)
+      FROM
+          mkcloud_application_import_detail
+      WHERE
+          is_delete = 0
+      <if test="method != null and method != ''">
+          AND batch_id = #{method,jdbcType=VARCHAR}
+      </if>
+  </select>
+
+  <!--查询批次明细列表-->
+  <select id="queryBatchDetailList" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT
+          <include refid="Base_Column_List" />
+      FROM
+          mkcloud_application_import_detail
+      WHERE
+          is_delete = 0
+      <if test="method != null and method != ''">
+          AND batch_id = #{method,jdbcType=VARCHAR}
+      </if>
+      <include refid="base.limit" />
+    </select>
+
+    <!--根据批次号删除明细-->
+    <delete id="delBybatchId" parameterType="java.lang.String">
+        DELETE
+        FROM
+            mkcloud_application_import_detail
+        WHERE
+            batch_id = #{batchId,jdbcType=VARCHAR}
+    </delete>
+    <!--根据批次号查询批次信息-->
+    <select id="selectAllDataByBatchId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM
+        mkcloud_application_import_detail
+        WHERE
+        is_delete = 0
+       AND batch_id = #{batchId,jdbcType=VARCHAR}
+
+    </select>
+    <select id="selectNoBusinessPersionDataCount" resultType="java.lang.Long">
+        select count(id)
+        from mkcloud_application_import_detail
+        where  1=1 and (business_people_code is null or business_people_code = '')
+        <if test="applyName != '' and applyName != null " >
+            and   apply_name = #{applyName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyMobile != '' and applyMobile != null " >
+            and   apply_mobile = #{applyMobile,jdbcType=VARCHAR}
+        </if>
+        <if test="beginDate != '' and beginDate != null" >
+            and apply_card_time >= #{beginDate,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != '' and endDate != null" >
+            and apply_card_time &lt;  #{endDate,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="selectNoBusinessPersionDataList" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from mkcloud_application_import_detail
+        where  1=1 and (business_people_code is null or business_people_code = '')
+        <if test="applyName != '' and applyName != null " >
+            and   apply_name = #{applyName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyMobile != '' and applyMobile != null " >
+            and   apply_mobile = #{applyMobile,jdbcType=VARCHAR}
+        </if>
+        <if test="beginDate != '' and beginDate != null" >
+            and apply_card_time >= #{beginDate,jdbcType=VARCHAR}
+        </if>
+        <if test="endDate != '' and endDate != null" >
+            and apply_card_time &lt;  #{endDate,jdbcType=VARCHAR}
+        </if>
+        order by apply_card_time DESC
+        <include refid="base.limit" />
+    </select>
+    <!--多条件查询条数-->
+    <select id="queryApplyCount" resultType="java.lang.Long">
+        SELECT
+            COUNT(1)
+        FROM
+            mkcloud_application_import_detail
+        WHERE
+            is_delete = 0
+        <if test="applyProduct != null and applyProduct !=''">
+            AND apply_product = #{applyProduct,jdbcType=VARCHAR}
+        </if>
+        <if test="applyName != null and applyName !=''">
+            AND apply_name = #{applyName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyMobile != null and applyMobile !=''">
+            AND apply_mobile = #{applyMobile,jdbcType=VARCHAR}
+        </if>
+        <if test="batchId != null and batchId !=''">
+            AND batch_id = #{batchId,jdbcType=VARCHAR}
+        </if>
+        <if test="businessPeopleCode != null and businessPeopleCode !=''">
+            AND business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="businessPeopleName != null and businessPeopleName !=''">
+            AND business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyBeginDate != null and applyBeginDate !=''">
+            AND apply_card_time >= #{applyBeginDate,jdbcType=VARCHAR}
+        </if>
+        <if test="applyEndDate != null and applyEndDate !=''">
+            AND apply_card_time &lt;= #{applyEndDate,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status !=''">
+            AND  audit_status = #{status,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--申卡记录条件查询-->
+    <select id="queryApplyRecord" resultMap="BaseResultMap">
+        SELECT
+            id, batch_id, apply_id, apply_name, apply_mobile, apply_id_card, apply_bank,
+            apply_product, presenter, apply_card_time, audit_status, business_people_code,
+            business_people_name,create_time
+        FROM
+            mkcloud_application_import_detail
+        WHERE
+            is_delete = 0
+        <if test="applyProduct != null and applyProduct !=''">
+            AND apply_product = #{applyProduct,jdbcType=VARCHAR}
+        </if>
+        <if test="applyName != null and applyName !=''">
+            AND apply_name = #{applyName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyMobile != null and applyMobile !=''">
+            AND apply_mobile = #{applyMobile,jdbcType=VARCHAR}
+        </if>
+        <if test="batchId != null and batchId !=''">
+            AND batch_id = #{batchId,jdbcType=VARCHAR}
+        </if>
+        <if test="businessPeopleCode != null and businessPeopleCode !=''">
+            AND business_people_code = #{businessPeopleCode,jdbcType=VARCHAR}
+        </if>
+        <if test="businessPeopleName != null and businessPeopleName !=''">
+            AND business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+        </if>
+        <if test="applyBeginDate != null and applyBeginDate !=''">
+            AND apply_card_time >= #{applyBeginDate,jdbcType=VARCHAR}
+        </if>
+        <if test="applyEndDate != null and applyEndDate !=''">
+            AND apply_card_time &lt;= #{applyEndDate,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null and status !=''">
+            AND  audit_status = #{status,jdbcType=VARCHAR}
+        </if>
+        <include refid="base.limit" />
+    </select>
+
+    <update id="updateByApplyIdAndPrduct" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudApplicationImportDetail" >
+        update mkcloud_application_import_detail
+        <set >
+            <if test="batchId != null" >
+                batch_id = #{batchId,jdbcType=VARCHAR},
+            </if>
+            <if test="visitId != null" >
+                visit_id = #{visitId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyName != null" >
+                apply_name = #{applyName,jdbcType=VARCHAR},
+            </if>
+            <if test="applyIdCard != null" >
+                apply_id_card = #{applyIdCard,jdbcType=VARCHAR},
+            </if>
+            <if test="applyBank != null" >
+                apply_bank = #{applyBank,jdbcType=VARCHAR},
+            </if>
+            <if test="presenter != null" >
+                presenter = #{presenter,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCardTime != null" >
+                apply_card_time = #{applyCardTime,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStatus != null" >
+                audit_status = #{auditStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="businessPeopleCode != null" >
+                business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+            </if>
+            <if test="businessPeopleName != null" >
+                business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+            </if>
+            <if test="isDelete != null" >
+                is_delete = #{isDelete,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null" >
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null" >
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="updator != null" >
+                updator = #{updator,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null" >
+                version = #{version,jdbcType=INTEGER},
+            </if>
+        </set>
+        where apply_id = #{applyId,jdbcType=VARCHAR}
+        and  apply_product = #{applyProduct,jdbcType=VARCHAR}
+        and apply_mobile = #{applyMobile,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="selectByVisitId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from mkcloud_application_import_detail
+        where    visit_id = #{visitId,jdbcType=VARCHAR}
+    </select>
+
+
+    <update id="updateByVisitId" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudApplicationImportDetail"  >
+    update mkcloud_application_import_detail
+    <set>
+        <if test="auditStatus != null" >
+        audit_status = #{auditStatus,jdbcType=VARCHAR},
+        </if>
+        <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+        </if>
+        <if test="businessPeopleCode != null" >
+            business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+        </if>
+        <if test="businessPeopleName != null" >
+            business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+        </if>
+        <if test="applyIdCard != null" >
+            apply_id_card = #{applyIdCard,jdbcType=VARCHAR},
+        </if>
+        update_time = now()
+    </set>
+    where   visit_id = #{visitId,jdbcType=VARCHAR}
+  </update>
+    <select id="selectByAuditStatus" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_application_import_detail
+    where  1=1
+        <if test="auditStatus != null   and auditStatus != '' "  >
+           and  audit_status = #{auditStatus,jdbcType=VARCHAR}
+        </if>
+       <if test="version != null   and version != '' "  >
+           and version = #{version,jdbcType=VARCHAR}
+       </if>
+  </select>
+
+    <select id="querySuccessCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '成功'
+    </select>
+
+    <select id="querySuccessOwnCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '成功' AND (business_people_code IS NULL OR business_people_code ='')
+    </select>
+
+    <select id="querySuccessPromotersCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '成功' AND (business_people_code IS NOT NULL AND business_people_code !='')
+    </select>
+
+    <select id="queryFailCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '无进件记录/拒件/二卡'
+    </select>
+
+    <select id="queryFailOwnCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '无进件记录/拒件/二卡' AND (business_people_code IS NULL OR business_people_code ='')
+    </select>
+
+    <select id="queryFailPromotersCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status = '无进件记录/拒件/二卡' AND (business_people_code IS NOT NULL AND business_people_code !='')
+    </select>
+
+    <select id="queryInCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status != '成功' AND audit_status != '无进件记录/拒件/二卡'
+    </select>
+
+    <select id="queryInOwnCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status != '成功' AND audit_status != '无进件记录/拒件/二卡' AND (business_people_code IS NULL OR business_people_code ='')
+    </select>
+
+    <select id="queryInPromotersCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM mkcloud_application_import_detail WHERE is_delete = '0' AND audit_status != '成功' AND audit_status != '无进件记录/拒件/二卡' AND (business_people_code IS NOT NULL AND business_people_code !='')
+    </select>
+
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudLoanInfoMapper" >
+  <select id="selectLoans" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from mkcloud_loan_info l
+    where l.is_delete = 0
+    <if test="productCode != null and productCode !=''">
+      and l.product_code = #{productCode,jdbcType=VARCHAR}
+    </if>
+    <if test="productName != null and productName !=''">
+      and l.product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !=''">
+      and l.status = #{status,jdbcType=VARCHAR}
+    </if>
+    order by l.order,l.id
+    <include refid="base.limit"/>
+  </select>
+  <select id="selectLoanCount" resultType="java.lang.Long">
+    select
+    count(*)
+    from mkcloud_loan_info l
+    where l.is_delete = 0
+    <if test="productCode != null and productCode !=''">
+      and l.product_code = #{productCode,jdbcType=VARCHAR}
+    </if>
+    <if test="productName != null and productName !=''">
+      and l.product_name = #{productName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !=''">
+      and l.status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <!--逻辑删除-->
+  <update id="deleteLogicByPrimaryKey" parameterType="java.lang.Long">
+    update mkcloud_loan_info
+    set is_delete = 1
+    where id = #{productId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByProductCode" resultType="java.lang.Long">
+    select
+    count(*)
+    from mkcloud_loan_info l
+    where l.is_delete = 0
+    and l.product_code = #{productCode,jdbcType=VARCHAR}
+  </select>
+</mapper>

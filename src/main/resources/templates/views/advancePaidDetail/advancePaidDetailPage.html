@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>预付款查询</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 18px; margin-left: 18px;">
+
+<br>
+<table class="layui-table" lay-data="{url:'advancePaymentPlan/selectByAdvancePaymentPlan',method:'post'}">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'totalPailMoney'}">预付款总计</th>
+        <th lay-data="{align:'center',field:'usedPailMoney'}">预付款已用</th>
+        <th lay-data="{align:'center',field:'overPailplusMoney'}">预付款结余</th>
+    </tr>
+    </thead>
+</table>
+<br>
+预付款记录
+<table class="layui-table" lay-data="{url:'advancePaymentPlan/selectByPayMentList',method:'post'}">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'accountDate'}">日期</th>
+        <th lay-data="{align:'center',field:'adjustTypeName'}">调整方式</th>
+        <th lay-data="{align:'center',field:'advance'}">金额</th>
+
+    </tr>
+    </thead>
+</table>
+<br>
+用款记录
+<table class="layui-table" lay-data="{url:'PrepaymentRuleConfiguration/selectByPrepaymentRuleList',method:'post',id:'finance'}" lay-filter="finance" >
+    <thead>
+        <th lay-data="{align:'center',field:'settlementType'}">费用类型</th>
+        <th lay-data="{align:'center',field:'totalCount',event: 'queryAll',style:'cursor: pointer;text-decoration:underline;color:#09f;'}">总量</th>
+        <th lay-data="{align:'center',field:'show'}">计费规则</th>
+        <th lay-data="{align:'center',field:'totalMoney'}">总费用</th>
+    </tr>
+    </thead>
+</table>
+
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['table','laydate'], function() {
+        var table = layui.table
+         ,laydate = layui.laydate;
+
+        //日期
+        laydate.render({
+            elem: '#beginDate'
+        });
+        laydate.render({
+            elem: '#endDate'
+        });
+        laydate.render({
+            elem: '#confirmBeginDate'
+        });
+        laydate.render({
+            elem: '#confirmEndDate'
+        });
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        payee:$('#payee').val(),
+                        payeeAccount:$('#payeeAccount').val(),
+                        costType:$('#costType').val(),
+                        beginDate:$('#beginDate').val(),
+                        endDate:$('#endDate').val(),
+                        confirmBeginDate:$('#confirmBeginDate').val(),
+                        confirmEndDate:$('#confirmEndDate').val()
+                    }
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(finance)', function(obj){
+
+            var data = obj.data;
+            var id = data.id;
+            //alert(data.id);
+           if(obj.event === 'queryAll'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page?page=totalAmount']
+                    ,title: '详情'
+                    ,shade: 0.5
+                    ,area: ['1000px', '500px']
+                    ,success: function(layero, index){
+                        //  var iframe = window['layui-layer-iframe'+index];
+                        var pIframe = $('iframe')[0].contentWindow.document;//找到上一级父页面
+                        var body = layer.getChildFrame('body',index);
+                        // var subForm = $(pIframe).find('#editForm');//在父页面里找到editForm表格，这个Id为所编辑form的ID值
+                        body.find('#advance').val("advancename");
+                        body.find('#endDate').val(data.settlementEndDate);
+                        body.find('#beginDate').val(data.settltmentBeginDate);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.advancePayment(data.settltmentBeginDate,data.settlementEndDate);
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceUserInfoMapper">
+	<resultMap id="FinanceUserInfoVo" type="mkcloudadmin.model.mkcloud.vo.MKCloudMemberInfoVo">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="mobile_num" property="mobileNum" jdbcType="VARCHAR" />
+		<result column="invite_code" property="inviteCode" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+		<result column="creator" property="creator" jdbcType="VARCHAR" />
+		<result column="updator" property="updator" jdbcType="VARCHAR" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+		<result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+	    <result column="channel_detail" property="channelDetail" jdbcType="VARCHAR" />
+	    <result column="platform_code" property="platformCode" jdbcType="VARCHAR" />
+	    <result column="platform_detail" property="platformDetail" jdbcType="VARCHAR" />
+	</resultMap>
+  
+    <select id="selectUserByIdList" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List"/>
+        from finance_user_info
+        where id in
+        <foreach collection="list" index="index" item="user_id" open="(" separator="," close=")">
+            #{user_id}
+        </foreach>
+    </select>
+
+
+    <select id="selectLikeMobile" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	    select 
+	    <include refid="Base_Column_List" />
+		    from finance_user_info
+		    where mobile_num like #{mobileNum,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectUsers" resultMap="FinanceUserInfoVo">
+		select
+		u.*,
+		c.channel_code,c.channel_detail,c.platform_code,c.platform_detail
+		from finance_user_info u
+		left join finance_user_register_channel_info c on u.id = c.user_id
+		where 0=0
+		<if test="mobileNum != null and mobileNum !=''">
+			 and u.mobile_num = #{mobileNum,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginDate != null and createBeginDate !=''">
+			 and u.create_time &gt; #{createBeginDate,jdbcType=VARCHAR}
+		</if>
+		<if test="createEndDate != null and createEndDate !=''">
+			 and u.create_time &lt; #{createEndDate,jdbcType=VARCHAR}
+		</if>
+		<if test="platformCode != null and platformCode !=''">
+			 and c.platform_code = #{platformCode,jdbcType=VARCHAR}
+		</if>
+		<if test="channelCode != null and channelCode !=''">
+			 and c.channel_code = #{channelCode,jdbcType=VARCHAR}
+		</if>
+		order by u.id
+        <include refid="base.limit" />
+	</select>
+	<select id="selectUserCount" resultType="java.lang.Long">
+		select count(u.id)
+		from finance_user_info u
+		left join finance_user_register_channel_info c on u.id = c.user_id
+		where 0 = 0
+		<if test="mobileNum != null and mobileNum !=''">
+			 and u.mobile_num = #{mobileNum,jdbcType=VARCHAR}
+		</if>
+		<if test="createBeginDate != null and createBeginDate !=''">
+			 and u.create_time &gt; #{createBeginDate,jdbcType=VARCHAR}
+		</if>
+		<if test="createEndDate != null and createEndDate !=''">
+			 and u.create_time &lt; #{createEndDate,jdbcType=VARCHAR}
+		</if>
+		<if test="platformCode != null and platformCode !=''">
+			 and c.platform_code = #{platformCode,jdbcType=VARCHAR}
+		</if>
+		<if test="channelCode != null and channelCode !=''">
+			 and c.channel_code = #{channelCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="$basePath">
+    <meta charset="utf-8">
+    <title>佣金结算</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="frame/layui-v2/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="search_bar" style="margin-top: 20px">
+    &emsp;产品名称：
+    <div class="layui-inline">
+        <input class="layui-input" name="method" id="search_product">
+    </div>
+    终端用户
+    <div class="layui-inline">
+        <input class="layui-input" name="method" id="search_user">
+    </div>
+    &emsp;
+    <button class="layui-btn" data-type="reload" style="margin-left: 20px;" id="search" >查询</button>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'commission/queryCommissionRecords',width:1500,method:'get', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{field:'id',width:160, sort: true}">id</th>
+        <th lay-data="{field:'prodName',width:160}">产品名称</th>
+        <th lay-data="{field:'terminalName',width:130}">终端用户</th>
+        <th lay-data="{field:'terminalPhone',width:190}">终端用户手机号</th>
+        <th lay-data="{field:'terminalMoney',width:190}">佣金金额</th>
+        <th lay-data="{field:'parentName',width:190}">直推用户</th>
+        <th lay-data="{field:'parentMoney',width:170}">佣金金额</th>
+        <th lay-data="{field:'grandParentName',width:170}">间推用户</th>
+        <th lay-data="{field:'grandParentPhone',width:170}">间推用户手机号</th>
+        <th lay-data="{field:'grandParentMoney',width:170}">佣金金额</th>
+        <th lay-data="{field:'createTimeShow',width:170}">结算时间</th>
+        </th>
+    </tr>
+    </thead>
+</table>
+</body>
+<script src="frame/layui-v2/layui.js" charset="utf-8"></script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        prodName : $('#search_product').val(),
+                        terminalName : $('#search_user').val()
+                    }
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</html>

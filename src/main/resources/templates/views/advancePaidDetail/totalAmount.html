@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>详情</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+    <style>
+        .displaya{
+            display: none;
+        }
+    </style>
+</head>
+<div class="search_bar" style="margin-top: 20px" >
+    </span>
+    <input  class="layui-input" id="advance" type="hidden" name="advance"/>
+    <input id="state" type="hidden" name="state" />
+     <input  class="layui-input" id="endDate" type="hidden" name="endDate"/>
+    <input id="beginDate" type="hidden" name="beginDate" />
+</div>
+</span>
+<!-- 自动渲染 -->
+<table id="demo" lay-filter="test"></table>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8" th:src="@{business/businesspeople/totalAmount.js}"></script>
+<script>
+    var $ = null;//获取jquery组件
+    layui.use(['jquery',], function (args) {
+        $ = layui.jquery;
+
+        $(document).ready(function () {
+            var value = $('#business_people_level').val();
+            var valueAdvance = $('#advance').val();
+            if (valueAdvance=="advancename") {
+                return $('#advancePaid').addClass('displaya');
+            }else if(!value){
+                return $('#displaynone').addClass('displaya');
+            }
+        })
+    });
+</script>
+</html>

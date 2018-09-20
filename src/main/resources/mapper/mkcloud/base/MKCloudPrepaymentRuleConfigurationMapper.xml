@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudPrepaymentRuleConfigurationMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudPrepaymentRuleConfiguration" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="merchant_code" property="merchantCode" jdbcType="VARCHAR" />
+    <result column="settlement_type" property="settlementType" jdbcType="VARCHAR" />
+    <result column="settlement_mode" property="settlementMode" jdbcType="VARCHAR" />
+    <result column="settlement_period" property="settlementPeriod" jdbcType="DECIMAL" />
+    <result column="settlement_period_unit" property="settlementPeriodUnit" jdbcType="VARCHAR" />
+    <result column="settltment_begin_date" property="settltmentBeginDate" jdbcType="DATE" />
+    <result column="settlement_end_date" property="settlementEndDate" jdbcType="DATE" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="show" property="show" jdbcType="VARCHAR" />
+    <result column="is_unit_settle" property="isUnitSettle" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, merchant_code, settlement_type, settlement_mode, settlement_period, settlement_period_unit, 
+    settltment_begin_date, settlement_end_date, price, `show`, is_unit_settle, `state`, 
+    create_time, create_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_prepayment_rule_configuration
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_prepayment_rule_configuration
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudPrepaymentRuleConfiguration" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_prepayment_rule_configuration (merchant_code, settlement_type, settlement_mode, 
+      settlement_period, settlement_period_unit, 
+      settltment_begin_date, settlement_end_date, price, 
+      `show`, is_unit_settle, `state`, 
+      create_time, create_user)
+    values (#{merchantCode,jdbcType=VARCHAR}, #{settlementType,jdbcType=VARCHAR}, #{settlementMode,jdbcType=VARCHAR}, 
+      #{settlementPeriod,jdbcType=DECIMAL}, #{settlementPeriodUnit,jdbcType=VARCHAR}, 
+      #{settltmentBeginDate,jdbcType=DATE}, #{settlementEndDate,jdbcType=DATE}, #{price,jdbcType=DECIMAL}, 
+      #{show,jdbcType=VARCHAR}, #{isUnitSettle,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudPrepaymentRuleConfiguration" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_prepayment_rule_configuration
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        merchant_code,
+      </if>
+      <if test="settlementType != null" >
+        settlement_type,
+      </if>
+      <if test="settlementMode != null" >
+        settlement_mode,
+      </if>
+      <if test="settlementPeriod != null" >
+        settlement_period,
+      </if>
+      <if test="settlementPeriodUnit != null" >
+        settlement_period_unit,
+      </if>
+      <if test="settltmentBeginDate != null" >
+        settltment_begin_date,
+      </if>
+      <if test="settlementEndDate != null" >
+        settlement_end_date,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="show != null" >
+        `show`,
+      </if>
+      <if test="isUnitSettle != null" >
+        is_unit_settle,
+      </if>
+      <if test="state != null" >
+        `state`,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementType != null" >
+        #{settlementType,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementMode != null" >
+        #{settlementMode,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementPeriod != null" >
+        #{settlementPeriod,jdbcType=DECIMAL},
+      </if>
+      <if test="settlementPeriodUnit != null" >
+        #{settlementPeriodUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="settltmentBeginDate != null" >
+        #{settltmentBeginDate,jdbcType=DATE},
+      </if>
+      <if test="settlementEndDate != null" >
+        #{settlementEndDate,jdbcType=DATE},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="show != null" >
+        #{show,jdbcType=VARCHAR},
+      </if>
+      <if test="isUnitSettle != null" >
+        #{isUnitSettle,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudPrepaymentRuleConfiguration" >
+    update mkcloud_prepayment_rule_configuration
+    <set >
+      <if test="merchantCode != null" >
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementType != null" >
+        settlement_type = #{settlementType,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementMode != null" >
+        settlement_mode = #{settlementMode,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementPeriod != null" >
+        settlement_period = #{settlementPeriod,jdbcType=DECIMAL},
+      </if>
+      <if test="settlementPeriodUnit != null" >
+        settlement_period_unit = #{settlementPeriodUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="settltmentBeginDate != null" >
+        settltment_begin_date = #{settltmentBeginDate,jdbcType=DATE},
+      </if>
+      <if test="settlementEndDate != null" >
+        settlement_end_date = #{settlementEndDate,jdbcType=DATE},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="show != null" >
+        `show` = #{show,jdbcType=VARCHAR},
+      </if>
+      <if test="isUnitSettle != null" >
+        is_unit_settle = #{isUnitSettle,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudPrepaymentRuleConfiguration" >
+    update mkcloud_prepayment_rule_configuration
+    set merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      settlement_type = #{settlementType,jdbcType=VARCHAR},
+      settlement_mode = #{settlementMode,jdbcType=VARCHAR},
+      settlement_period = #{settlementPeriod,jdbcType=DECIMAL},
+      settlement_period_unit = #{settlementPeriodUnit,jdbcType=VARCHAR},
+      settltment_begin_date = #{settltmentBeginDate,jdbcType=DATE},
+      settlement_end_date = #{settlementEndDate,jdbcType=DATE},
+      price = #{price,jdbcType=DECIMAL},
+      `show` = #{show,jdbcType=VARCHAR},
+      is_unit_settle = #{isUnitSettle,jdbcType=VARCHAR},
+      `state` = #{state,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

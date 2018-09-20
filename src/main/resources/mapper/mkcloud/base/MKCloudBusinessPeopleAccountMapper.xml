@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleAccountMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <!--修改了此处类型-->
+    <result column="business_people_id" property="businessPeopleId" jdbcType="VARCHAR" />
+    <result column="account_bank" property="accountBank" jdbcType="VARCHAR" />
+    <result column="account_code" property="accountCode" jdbcType="VARCHAR" />
+    <result column="account_state" property="accountState" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, business_people_id, account_bank, account_code, account_state, create_time, create_user, 
+    update_time, update_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people_account
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_business_people_account
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people_account (business_people_id, account_bank, account_code, 
+      account_state, create_time, create_user, 
+      update_time, update_user)
+    values (#{businessPeopleId,jdbcType=VARCHAR}, #{accountBank,jdbcType=VARCHAR}, #{accountCode,jdbcType=VARCHAR},
+      #{accountState,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_business_people_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleId != null" >
+        business_people_id,
+      </if>
+      <if test="accountBank != null" >
+        account_bank,
+      </if>
+      <if test="accountCode != null" >
+        account_code,
+      </if>
+      <if test="accountState != null" >
+        account_state,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="businessPeopleId != null" >
+        #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBank != null" >
+        #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null" >
+        #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountState != null" >
+        #{accountState,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    update mkcloud_business_people_account
+    <set >
+      <if test="businessPeopleId != null" >
+        business_people_id = #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountBank != null" >
+        account_bank = #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null" >
+        account_code = #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountState != null" >
+        account_state = #{accountState,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    update mkcloud_business_people_account
+    set business_people_id = #{businessPeopleId,jdbcType=VARCHAR},
+      account_bank = #{accountBank,jdbcType=VARCHAR},
+      account_code = #{accountCode,jdbcType=VARCHAR},
+      account_state = #{accountState,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

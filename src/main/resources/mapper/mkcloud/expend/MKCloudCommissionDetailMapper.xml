@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCommissionDetailMapper" >
+
+  <select id="selectCommissionManageDataCount" resultType="java.lang.Long">
+    select count(distinct business_people_ID)
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '0'
+    <if test="businessPeopleId != null and businessPeopleId !=''">
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''">
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="selectCommissionManageDataList" resultType="mkcloudadmin.model.mkcloud.vo.MKCloudCommissionConfirmVO">
+    select
+    business_people_ID businessPeopleId,
+    business_people_name businessPeopleName,
+    sum( business_people_commission ) settlementCommission
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '0'
+    <if test="businessPeopleId != null and businessPeopleId !=''">
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''">
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    GROUP BY
+    business_people_ID
+    ORDER BY
+    business_people_ID
+    <include refid="base.limit" />
+  </select>
+
+  <select id="selectCommissionManageUnDetailCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '0'
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectCommissionManageUnDetailList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '0'
+    and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    order by id
+    <include refid="base.limit" />
+  </select>
+
+  <select id="selectCommissionManageDoDetailCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '1'
+    and settlement_id = #{settlementId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectCommissionManageDoDetailList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_commission_detail
+    where 0 = 0 and approval_result = '1'
+    and settlement_id = #{settlementId,jdbcType=VARCHAR}
+    order by id
+    <include refid="base.limit" />
+  </select>
+
+
+  <update id="updateByBusinessPeopleIdSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudCommissionDetail" >
+    update mkcloud_commission_detail
+    <set >
+      <if test="cusName != null" >
+        cus_name = #{cusName,jdbcType=VARCHAR},
+      </if>
+      <if test="cusTel != null" >
+        cus_tel = #{cusTel,jdbcType=VARCHAR},
+      </if>
+      <if test="cusIdNo != null" >
+        cus_id_no = #{cusIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        `level` = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleName != null" >
+        business_people_name = #{businessPeopleName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleCommission != null" >
+        business_people_commission = #{businessPeopleCommission,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="detailId != null" >
+        detail_id = #{detailId,jdbcType=VARCHAR},
+      </if>
+      <if test="batchId != null" >
+        batch_id = #{batchId,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionCode != null" >
+        institution_code = #{institutionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionName != null" >
+        institution_name = #{institutionName,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalDate != null" >
+        approval_date = #{approvalDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvalResult != null" >
+        approval_result = #{approvalResult,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementId != null" >
+        settlement_id = #{settlementId,jdbcType=VARCHAR},
+      </if>
+      <if test="commission != null" >
+        commission = #{commission,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER}
+      </if>
+    </set>
+    where business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    and approval_result = '0'
+  </update>
+
+  <select id="selectCommissionSearchDetailCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_commission_detail
+    where 0 = 0
+    <if test="businessPeopleId != null and businessPeopleId !=''">
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''">
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    <if test="cusName != null and cusName !=''">
+      and cus_name = #{cusName,jdbcType=VARCHAR}
+    </if>
+    <if test="cusTel != null and cusTel !=''" >
+      and cus_tel = #{cusTel,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null">
+      and create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null" >
+      and create_time &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectCommissionSearchDetailList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_commission_detail
+    where 0 = 0
+    <if test="businessPeopleId != null and businessPeopleId !=''" >
+     and  business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''" >
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    <if test="cusName != null and cusName !=''" >
+      and cus_name = #{cusName,jdbcType=VARCHAR}
+    </if>
+    <if test="cusTel != null and cusTel !=''" >
+      and cus_tel = #{cusTel,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null " >
+      and create_time >= #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null " >
+      and create_time &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by id
+    <include refid="base.limit" />
+  </select>
+  <update id="updateStateBySettlementId" parameterType="java.lang.String" >
+    update mkcloud_commission_detail
+    set state = '1'
+    where settlement_id = #{settlementId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByBusinessPeopleCodeAndClientInfo" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_commission_detail
+    where
+     business_people_ID = #{businessPeopleCode,jdbcType=VARCHAR}
+    and cus_tel = #{cusTel,jdbcType=VARCHAR}
+    and batch_id = #{batchId,jdbcType=VARCHAR}
+    and product_name = #{productName,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

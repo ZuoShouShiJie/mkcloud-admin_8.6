@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudMemberInfoMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="member_code" property="memberCode" jdbcType="VARCHAR" />
+    <result column="member_name" property="memberName" jdbcType="VARCHAR" />
+    <result column="tel" property="tel" jdbcType="VARCHAR" />
+    <result column="ID_no" property="idNo" jdbcType="VARCHAR" />
+    <result column="work_address" property="workAddress" jdbcType="VARCHAR" />
+    <result column="channel_code" property="channelCode" jdbcType="VARCHAR" />
+    <result column="business_people_ID" property="businessPeopleId" jdbcType="VARCHAR" />
+    <result column="business_people_code" property="businessPeopleCode" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="has_business" property="hasBusiness" jdbcType="VARCHAR" />
+    <result column="business_status" property="businessStatus" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, member_code, member_name, tel, ID_no, work_address, channel_code, business_people_ID, 
+    business_people_code, `state`, `type`, has_business, business_status, open_id, create_time, 
+    create_user, update_time, update_user
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_member_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_member_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_member_info (member_code, member_name, tel, 
+      ID_no, work_address, channel_code, 
+      business_people_ID, business_people_code, `state`, 
+      `type`, has_business, business_status, 
+      open_id, create_time, create_user, 
+      update_time, update_user)
+    values (#{memberCode,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{idNo,jdbcType=VARCHAR}, #{workAddress,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, 
+      #{businessPeopleId,jdbcType=VARCHAR}, #{businessPeopleCode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, 
+      #{type,jdbcType=VARCHAR}, #{hasBusiness,jdbcType=VARCHAR}, #{businessStatus,jdbcType=VARCHAR}, 
+      #{openId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_member_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberCode != null" >
+        member_code,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="tel != null" >
+        tel,
+      </if>
+      <if test="idNo != null" >
+        ID_no,
+      </if>
+      <if test="workAddress != null" >
+        work_address,
+      </if>
+      <if test="channelCode != null" >
+        channel_code,
+      </if>
+      <if test="businessPeopleId != null" >
+        business_people_ID,
+      </if>
+      <if test="businessPeopleCode != null" >
+        business_people_code,
+      </if>
+      <if test="state != null" >
+        `state`,
+      </if>
+      <if test="type != null" >
+        `type`,
+      </if>
+      <if test="hasBusiness != null" >
+        has_business,
+      </if>
+      <if test="businessStatus != null" >
+        business_status,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberCode != null" >
+        #{memberCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null" >
+        #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null" >
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleId != null" >
+        #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleCode != null" >
+        #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="hasBusiness != null" >
+        #{hasBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="businessStatus != null" >
+        #{businessStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+    update mkcloud_member_info
+    <set >
+      <if test="memberCode != null" >
+        member_code = #{memberCode,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        ID_no = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="workAddress != null" >
+        work_address = #{workAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null" >
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleId != null" >
+        business_people_ID = #{businessPeopleId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPeopleCode != null" >
+        business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        `state` = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        `type` = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="hasBusiness != null" >
+        has_business = #{hasBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="businessStatus != null" >
+        business_status = #{businessStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudMemberInfo" >
+    update mkcloud_member_info
+    set member_code = #{memberCode,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      tel = #{tel,jdbcType=VARCHAR},
+      ID_no = #{idNo,jdbcType=VARCHAR},
+      work_address = #{workAddress,jdbcType=VARCHAR},
+      channel_code = #{channelCode,jdbcType=VARCHAR},
+      business_people_ID = #{businessPeopleId,jdbcType=VARCHAR},
+      business_people_code = #{businessPeopleCode,jdbcType=VARCHAR},
+      `state` = #{state,jdbcType=VARCHAR},
+      `type` = #{type,jdbcType=VARCHAR},
+      has_business = #{hasBusiness,jdbcType=VARCHAR},
+      business_status = #{businessStatus,jdbcType=VARCHAR},
+      open_id = #{openId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

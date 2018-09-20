@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceQuestionAndAnswerMapper">
+    <update id="updateToDeleteByPrimaryKey" parameterType="java.lang.Long">
+    update finance_question_and_answer
+    set is_delete = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from finance_question_and_answer
+        <where>
+            is_delete = 0
+            <if test="title != null">
+                AND title like concat("%", #{title,jdbcType=VARCHAR},"%")
+            </if>
+        </where>
+        ORDER BY seq_no,id
+        <include refid="base.limit" />
+    </select>
+    <select id="queryQACount" resultType="java.lang.Long">
+        SELECT count(*)
+        FROM finance_question_and_answer
+        <where>
+            is_delete = 0
+            <if test="title != null">
+                AND title like concat("%", #{title,jdbcType=VARCHAR},"%")
+            </if>
+        </where>
+
+    </select>
+</mapper>

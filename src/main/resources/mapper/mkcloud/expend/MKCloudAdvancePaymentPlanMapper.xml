@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudAdvancePaymentPlanMapper" >
+
+  <select id="selectByPayMentPlan" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_advance_payment_plan
+  </select>
+  <select id="selectByPayMentPlanCount" resultType="java.lang.Integer"  >
+    select  count(id)
+    from mkcloud_advance_payment_plan
+  </select>
+</mapper>

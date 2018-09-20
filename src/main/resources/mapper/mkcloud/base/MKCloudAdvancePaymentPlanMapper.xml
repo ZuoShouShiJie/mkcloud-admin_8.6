@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudAdvancePaymentPlanMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudAdvancePaymentPlan" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="merchant_code" property="merchantCode" jdbcType="VARCHAR" />
+    <result column="adjust_type" property="adjustType" jdbcType="VARCHAR" />
+    <result column="advance" property="advance" jdbcType="DECIMAL" />
+    <result column="account_date" property="accountDate" jdbcType="DATE" />
+    <result column="account_bank" property="accountBank" jdbcType="VARCHAR" />
+    <result column="account_name" property="accountName" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, merchant_code, adjust_type, advance, account_date, account_bank, account_name, 
+    account, create_user, create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_advance_payment_plan
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_advance_payment_plan
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudAdvancePaymentPlan" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_advance_payment_plan (merchant_code, adjust_type, advance, 
+      account_date, account_bank, account_name, 
+      account, create_user, create_time
+      )
+    values (#{merchantCode,jdbcType=VARCHAR}, #{adjustType,jdbcType=VARCHAR}, #{advance,jdbcType=DECIMAL}, 
+      #{accountDate,jdbcType=DATE}, #{accountBank,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudAdvancePaymentPlan" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_advance_payment_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        merchant_code,
+      </if>
+      <if test="adjustType != null" >
+        adjust_type,
+      </if>
+      <if test="advance != null" >
+        advance,
+      </if>
+      <if test="accountDate != null" >
+        account_date,
+      </if>
+      <if test="accountBank != null" >
+        account_bank,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="merchantCode != null" >
+        #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustType != null" >
+        #{adjustType,jdbcType=VARCHAR},
+      </if>
+      <if test="advance != null" >
+        #{advance,jdbcType=DECIMAL},
+      </if>
+      <if test="accountDate != null" >
+        #{accountDate,jdbcType=DATE},
+      </if>
+      <if test="accountBank != null" >
+        #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudAdvancePaymentPlan" >
+    update mkcloud_advance_payment_plan
+    <set >
+      <if test="merchantCode != null" >
+        merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustType != null" >
+        adjust_type = #{adjustType,jdbcType=VARCHAR},
+      </if>
+      <if test="advance != null" >
+        advance = #{advance,jdbcType=DECIMAL},
+      </if>
+      <if test="accountDate != null" >
+        account_date = #{accountDate,jdbcType=DATE},
+      </if>
+      <if test="accountBank != null" >
+        account_bank = #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null" >
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudAdvancePaymentPlan" >
+    update mkcloud_advance_payment_plan
+    set merchant_code = #{merchantCode,jdbcType=VARCHAR},
+      adjust_type = #{adjustType,jdbcType=VARCHAR},
+      advance = #{advance,jdbcType=DECIMAL},
+      account_date = #{accountDate,jdbcType=DATE},
+      account_bank = #{accountBank,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>访问数据导入</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body style="margin-right: 20px; margin-left: 20px;">
+
+<div class="search_bar" style="margin-top: 20px">
+    &emsp; 批次号：
+    <div class="layui-inline">
+        <input class="layui-input" name="method" placeholder="请输入批次号" id="search_product">
+    </div>&emsp;
+    <button class="layui-btn" data-type="reload" style="margin-left: 20px;">查询</button>
+    <button class="layui-btn layui-btn-normal add_button" id="uploadExcel">数据导入</button>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'feedVisitackInfoImport/queryfeedVisitInfoImportData',method:'post', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{align:'center',field:'seqNo',width:100}">序号</th>
+        <th lay-data="{align:'center',field:'batchId'}">导入批次号</th>
+        <th lay-data="{align:'center',field:'createTime'}">导入时间</th>
+        <th lay-data="{align:'center',field:'creator'}">导入人员</th>
+        <th lay-data="{align:'center',field:'stateName'}">确认状态</th>
+        <th lay-data="{align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+    </thead>
+</table>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="detail">明细</a>
+    <!--<a class="layui-btn layui-btn-xs" lay-event="edit">确认</a></thead>
+</
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+    <!-- 这里同样支持 laytpl 语法，如： -->
+    {{#  if(d.state ==0){ }}
+    <a class="layui-btn layui-btn-xs" lay-event="confirm">确认</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  } }}
+
+</script>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        method : $('#search_product').val()
+                    }
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(finance)', function(obj){
+            var data = obj.data;
+            var id = data.id;
+            var batchId = data.batchId;
+            if(obj.event === 'confirm'){
+
+                 $.ajax({
+                 url:'feedVisitackInfoImport/confirmVisitInfo',
+                 type:'post',
+                 dataType:'json',
+                 data:{
+                     batchId:batchId
+                 },
+                 success:function (res) {
+                     layui.table.reload('finance');
+                     alert(res.msg);
+
+                 } ,
+                 error:function (res) {
+                 layer.alert('网络错误!');
+                 }
+                 });
+            } else if(obj.event === 'del'){
+                layer.confirm('是否确定删除数据？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url:'feedVisitackInfoImport/delBatchInfo',
+                        type:'post',
+                        dataType:'json',
+                        data:{
+                            batchId:batchId
+                        },
+                        success:function (res) {
+                            if(res.code >0){
+                                layer.alert('删除失败');
+                            }else {
+                                layer.msg(status.msg,{
+                                    icon:1,
+                                    offset: 'rb',//右下角弹出
+                                    title: false,//不显示标题
+                                    closeBtn: 0, //不显示关闭按钮
+                                    shade: [0],//不显示遮罩层
+                                    time: 2000, //2秒后自动关闭
+                                    anim: 4,//动画效果
+                                });
+                                layui.table.reload('finance'); //更新成功刷新当前数据表格 分页默认为当前页
+
+                            }
+                        },
+                        error:function (res) {
+                            layer.alert('网络错误!');
+                        }
+                    });
+                });
+            } else if(obj.event === 'detail'){
+                layer.open({
+                    type: 2
+                    ,offset: 'auto'
+                    ,id: 'saveAuto'
+                    ,content: ['page_feedVisitInfoImportDetail']
+                    ,title: '产品明细'
+                    ,shade: 0.5
+                    ,area: ['1100px', '500px']
+                    ,success: function(layero, index){
+                        var body = layer.getChildFrame('body',index);
+                        var iframeWin = window[layero.find('iframe')[0]['name']];
+                        iframeWin.queryVisitOnLoad(data.batchId);
+                    }
+                    ,end: function () {
+                        $(".layui-laypage-btn")[0].click();
+                    }
+                });
+
+            }
+        });
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //excel上传
+            var uploadInst = upload.render({
+                elem: '#uploadExcel'
+                ,url: 'feedVisitackInfoImport/excelUpload/'
+                ,accept:'file'
+                ,done: function(res){
+                    alert(res.msg);
+                    location.reload();
+                }
+                ,error : function(res) {
+                    alert("上传失败");
+                }
+            });
+        });
+    });
+</script>
+</html>

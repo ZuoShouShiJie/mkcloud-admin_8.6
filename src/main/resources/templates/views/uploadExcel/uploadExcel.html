@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>上传excel记录</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="frame/layui-v2/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="search_bar">
+    <button type="button" class="layui-btn"  id="excel">上传excel</button>
+    <span class="layui-btn layui-btn-danger layui-btn-xs" >每天6：00---24：00上传</span>
+</div>
+
+<!-- 自动渲染 -->
+<table class="layui-table" lay-data="{url:'excel/queryUploadRecords',width:900,method:'get', page:true, id:'finance'}" lay-filter="finance">
+    <thead>
+    <tr>
+        <th lay-data="{field:'id',width:60}">id</th>
+        <th lay-data="{field:'batchNo',width:130, sort: true}">批次号</th>
+        <th lay-data="{field:'detailsNum',width:90}">上传总数</th>
+        <th lay-data="{field:'detailsValidNum',width:90}">成功数量</th>
+        <th lay-data="{field:'failNum',width:90}">失败数量</th>
+        <th lay-data="{field:'createTimeShow',width:170}">上传时间</th>
+        <th lay-data="{width:320, align:'center', toolbar: '#barDemo'}">下载
+        </th>
+    </tr>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="success">下载成功</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="fail">下载失败</a>
+    </script>
+    </thead>
+</table>
+</body>
+<script src="frame/layui-v2/layui.js" charset="utf-8"></script>
+<script>
+    layui.use('table', function() {
+        var table = layui.table;
+
+        // 表格数据重载
+        var $ = layui.$, active = {
+            reload : function() {
+                //执行重载
+                table.reload('finance', {
+                    page : {
+                        curr : 1
+                    },
+                    where : {
+                        method : $('#search_product').val(),
+                        isShow : $('#search_show').val()
+                    }
+                });
+            }
+        };
+        // 添加搜索点击事件监听
+        $('.search_bar .layui-btn').on('click', function() {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        //监听工具条
+        table.on('tool(finance)', function(obj){
+            var data = obj.data;
+            var id = data.id;
+            //alert(data.id);
+            var productName = data.productName;
+            if(obj.event === 'detail'){
+                layer.msg('seqNo：'+ data.seqNo + ' 的查看操作');
+            } else if(obj.event === 'success'){
+                window.location.href = 'excel/excelDownlload?type=success&allId='+id;
+            } else if(obj.event === 'fail') {
+                window.location.href = 'excel/excelDownlload?type=fail&allId=' + id;
+            }
+        });
+        layui.use('upload', function(){
+            var $ = layui.jquery
+                , upload = layui.upload;
+
+            //普通图片上传
+            var uploadInst = upload.render({
+                elem: '#excel'
+                ,url: 'excel/excelUpload/'
+                ,accept:'file'
+                ,done: function(res){
+                    alert(res.msg);
+                }
+                ,error : function(res) {
+                    alert("上传失败");
+                }
+            });
+        });
+    });
+</script>
+</html>

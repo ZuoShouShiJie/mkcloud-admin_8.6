@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudBusinessPeopleAccountMapper" >
+  <select id="selectPeopleCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people_account
+    where business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByBusinessPeopleId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_business_people_account
+    where business_people_id = #{businessPeopleId,jdbcType=VARCHAR} and account_state = '1'
+  </select>
+  <!--根据business_people_id删除信息-->
+  <delete id="deleteByPeopleId" parameterType="java.lang.String" >
+    delete from mkcloud_business_people_account
+    where business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+  </delete>
+  <update id="updateByStatic"  >
+    update mkcloud_business_people_account
+     set    account_state = #{state,jdbcType=VARCHAR}
+    where business_people_id = #{businessPeopleCode,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="updateBySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudBusinessPeopleAccount" >
+    update mkcloud_business_people_account
+    <set >
+     <!-- <if test="businessPeopleId != null" >
+        business_people_id = #{businessPeopleId,jdbcType=VARCHAR},
+      </if>-->
+      <if test="accountBank != null" >
+        account_bank = #{accountBank,jdbcType=VARCHAR},
+      </if>
+      <if test="accountCode != null" >
+        account_code = #{accountCode,jdbcType=VARCHAR},
+      </if>
+      <if test="accountState != null" >
+        account_state = #{accountState,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where  business_people_id = #{businessPeopleId,jdbcType=VARCHAR}
+      and account_state = '1'
+  </update>
+</mapper>

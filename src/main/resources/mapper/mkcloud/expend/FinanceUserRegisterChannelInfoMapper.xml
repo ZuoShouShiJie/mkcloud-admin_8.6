@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.FinanceUserRegisterChannelInfoMapper">
+    <select id="selectChannelByUserId" resultMap="BaseResultMap" parameterType="java.util.List">
+        select
+        <include refid="Base_Column_List"/>
+        from finance_user_register_channel_info
+        where user_id in
+        <foreach collection="list" index="index" item="user_id" open="(" separator="," close=")">
+            #{user_id}
+        </foreach>
+    </select>
+    <select id="queryUserByChannelCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from finance_user_register_channel_info a
+        where
+        a.channel_code=#{channelCode,jdbcType=VARCHAR}
+        order by a.id
+        <include refid="base.limit"/>
+    </select>
+
+    <select id="queryCountByChannelCode" resultType="java.lang.Long">
+        select
+        count(*)
+        from finance_user_register_channel_info a
+        where
+        a.channel_code=#{channelCode,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

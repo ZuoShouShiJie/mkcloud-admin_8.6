@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudRoleInfoMapper" >
+  <resultMap id="BaseResultMap" type="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_type" property="roleType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="VARCHAR" />
+    <result column="describe" property="describe" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="updator" property="updator" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, org_code, role_id, role_name, role_type, `status`, is_delete, `describe`, creator, 
+    create_time, updator, update_time, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from mkcloud_role_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from mkcloud_role_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_role_info (org_code, role_id, role_name, 
+      role_type, `status`, is_delete, 
+      `describe`, creator, create_time, 
+      updator, update_time, version
+      )
+    values (#{orgCode,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, 
+      #{roleType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isDelete,jdbcType=VARCHAR}, 
+      #{describe,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updator,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mkcloud_role_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgCode != null" >
+        org_code,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="roleType != null" >
+        role_type,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+      <if test="describe != null" >
+        `describe`,
+      </if>
+      <if test="creator != null" >
+        creator,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updator != null" >
+        updator,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    update mkcloud_role_info
+    <set >
+      <if test="orgCode != null" >
+        org_code = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null" >
+        role_type = #{roleType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null" >
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updator != null" >
+        updator = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    update mkcloud_role_info
+    set org_code = #{orgCode,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      updator = #{updator,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      version = #{version,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryRoleInfo" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_role_info
+    where 1=1 and role_type != '1'
+    <if test="orgCode != null and orgCode !='' " >
+      and  org_code = #{orgCode,jdbcType=VARCHAR}
+    </if>
+    <if test="id != null and id !='' " >
+    and  id = #{id,jdbcType=BIGINT}
+    </if>
+    <if test="roleName != null and roleName !='' " >
+     and role_name = #{roleName,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null and status !='' " >
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="queryRoleByName" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_role_info
+    where 1=1
+    <if test="orgCode != null and orgCode !='' " >
+      and  org_code = #{orgCode,jdbcType=VARCHAR}
+    </if>
+    <if test="roleName != null and roleName !='' " >
+      and role_name = #{roleName,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+
+  <select id="queryRoleByUserId" resultMap="BaseResultMap" parameterType="mkcloudadmin.model.mkcloud.po.MKCloudRoleInfo">
+    select role.*
+    from mkcloud_user_info us,mkcloud_user_role ur,mkcloud_role_info role where
+    us.status =1
+     and ur.status=1
+     and role.status=1
+     and us.id = #{id,jdbcType=VARCHAR}
+     and us.org_code=#{orgCode,jdbcType=VARCHAR}
+     and ur.org_code=#{orgCode,jdbcType=VARCHAR}
+     and role.org_code=#{orgCode,jdbcType=VARCHAR}
+     and  us.id=ur.user_id
+     and ur.role_id=role.id
+  </select>
+</mapper>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>分派页面</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/frame/layui-v2/css/layui.css}" media="all">
+</head>
+<body>
+
+<form id="editForm" class="layui-form" action="noBusinessPersionManage/saveDeployBusinessData" onsubmit="return false"  style="margin:20px 10px;">
+
+    <input id="pid" type="hidden" name="pid" />
+
+   <div class="layui-form-item">
+        <label class="layui-form-label">客户姓名</label>
+        <div class="layui-input-block">
+            <input id="applyName" name="applyName"  autocomplete="off" class="layui-input" disabled border="0">
+        </div>
+    </div>
+   <div class="layui-form-item">
+        <label class="layui-form-label">手机号码</label>
+        <div class="layui-input-block">
+            <input id="applyMobile" name="applyMobile" autocomplete="off"  class="layui-input" disabled border="0">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">产品名称</label>
+        <div class="layui-input-block">
+            <input id="applyProduct" name="applyProduct" autocomplete="off"  class="layui-input" disabled  border="0">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户申请时间</label>
+        <div class="layui-input-block">
+            <input id="applyCardTime" name="applyCardTime"  autocomplete="off"  class="layui-input" disabled  border="0">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">推广员工号</label>
+        <div class="layui-input-block">
+            <input id="businessPeopleCode" name="businessPeopleCode" lay-verify="required" autocomplete="off"  class="layui-input" type="text">
+        </div>
+    </div>
+
+    <div class="layui-upload">
+        <label class="layui-form-label" style="width: 100px">推广员工证明</label>
+        <div class="layui-upload">
+            <input id="logoUrl" type="hidden" name="logoUrl"  required lay-verify="required" />
+            <button type="button" class="layui-btn"  id="logo">上传图片</button>
+            <div>
+                <label class="layui-form-label">LOGO显示</label>
+                <div class="layui-upload-list" style="margin-left:100px;">
+                    <img class="layui-upload-img" id="showLogo" style="height:80px;width:80px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="add_button">确认</button>
+        </div>
+    </div>
+</form>
+</body>
+<script th:src="@{/frame/layui-v2/layui.js}" charset="utf-8"></script>
+<script type="text/javascript">
+    layui.use('upload', function(){
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#logo'
+            ,url: 'file/uploadImage/'
+            ,done: function(res){
+                //如果上传失败
+                if(res.code > 0){
+                    $("[name=logoUrl]").val("");
+                    $('#showLogo').attr('src', "");
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                $("[name=logoUrl]").val(res.src);
+                $('#showLogo').attr('src', res.src);
+            }
+        });
+
+
+
+    });
+    layui.use([ 'form', 'layedit', 'laydate'], function() {
+        var form = layui.form;
+        var $ = layui.$;//获取jquery组件
+
+        form.verify({
+            percentage : function(value) {
+                if(!new RegExp(/^((\d+\.?\d*)|(\d*\.\d+))\%$/).test(value)){
+                    return '请输入百分比';
+                }
+            },
+            noZeroInteger : function (value) {
+                if(!new RegExp(/^[1-9]\d*$/).test(value)){
+                    return '请输入正整数';
+                }
+
+            }
+        });
+
+        //监听提交
+        form.on('submit(add_button)', function(editData) {
+            params = editData.field;
+            // 发现有字段变更之后，通过ajax更新所有字段
+            $.post("noBusinessPersionManage/saveDeployBusinessData", params, function(res) {
+                if (true) {
+                    alert(res.msg);
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引（父类的弹框）
+                    parent.layer.close(index); //再执行关闭
+                   // layer.alert('保存成功！');
+                } else {
+                    layer.alert('保存失败：' + res.msg);
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</html>

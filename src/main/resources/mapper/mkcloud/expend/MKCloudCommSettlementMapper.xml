@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mkcloudadmin.mapper.mkcloud.MKCloudCommSettlementMapper" >
+  <select id="selectCommissionManageDataCount" resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_comm_settlement
+    where 0 = 0 and approval_result = '1'
+    <if test="businessPeopleId != null and businessPeopleId !=''">
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''">
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null ">
+      and approval_date &gt; #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      and approval_date &lt; #{endDate,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+
+  <select id="selectCommissionManageDataList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_comm_settlement
+    where 0 = 0 and approval_result = '1'
+    <if test="businessPeopleId != null and businessPeopleId !=''">
+      and business_people_ID = #{businessPeopleId,jdbcType=VARCHAR}
+    </if>
+    <if test="businessPeopleName != null and businessPeopleName !=''">
+      and business_people_name = #{businessPeopleName,jdbcType=VARCHAR}
+    </if>
+    <if test="beginDate != null">
+      and approval_date &gt; #{beginDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="endDate != null">
+      and approval_date &lt;  #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    order by id
+    <include refid="base.limit" />
+  </select>
+
+  <select id="selectCommCount"  resultType="java.lang.Long">
+    select count(id)
+    from mkcloud_comm_settlement
+  </select>
+  <select id="selectCommList" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from mkcloud_comm_settlement
+    order by id
+    <include refid="base.limit" />
+  </select>
+
+
+  <update id="updateStateBySettlementId" parameterType="java.lang.String" >
+    update mkcloud_comm_settlement
+    set state = '1'
+    where settlement_id = #{settlementId,jdbcType=VARCHAR}
+  </update>
+
+  <select id="queryPaidCommission" resultType="java.math.BigDecimal">
+    SELECT SUM(settlement_commission) FROM mkcloud_comm_settlement WHERE is_delete='0' AND state='1'
+  </select>
+
+  <select id="queryWaitCommission" resultType="java.math.BigDecimal">
+    SELECT SUM(settlement_commission) FROM mkcloud_comm_settlement WHERE is_delete='0' AND state='0'
+  </select>
+
+</mapper>
